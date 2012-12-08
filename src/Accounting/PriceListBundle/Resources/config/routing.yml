@@ -1,0 +1,6 @@
+# src/Accounting/PriceListBundle/Resources/config/routing.yml
+AccountingPriceListBundle_index:
+    pattern:  /price_list
+    defaults: { _controller: AccountingPriceListBundle:Default:index }
+    requirements:
+        _method:  GET

@@ -1,3 +1,15 @@
+accounting_deliveries:
+    resource: "@AccountingDeliveriesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+accounting_main:
+    resource: "@AccountingMainBundle/Resources/config/routing.yml"
+    prefix:   /
+
+accounting_price_list:
+    resource: "@AccountingPriceListBundle/Resources/config/routing.yml"
+    prefix:   /
+
 # Internal routing configuration to handle ESI
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
