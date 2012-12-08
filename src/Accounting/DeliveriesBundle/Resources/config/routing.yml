@@ -1,0 +1,18 @@
+# src/Accounting/DeliveriesBundle/Resources/config/routing.yml
+AccountingDeliveriesBundle_index:
+    pattern:  /deliveries
+    defaults: { _controller: AccountingDeliveriesBundle:Default:index }
+    requirements:
+        _method:  GET
+
+AccountingDeliveriesBundle_filter:
+    pattern:  /deliveries/filter
+    defaults: { _controller: AccountingDeliveriesBundle:Default:filter }
+    requirements:
+        _method:  GET
+        
+AccountingDeliveriesBundle_new:
+    pattern:  /deliveries/new
+    defaults: { _controller: AccountingDeliveriesBundle:Default:new }
+    requirements:
+        _method:  GET
