@@ -1,0 +1,13 @@
+{# src/Accounting/DeliveriesBundle/Resources/views/layout.html.twig #}
+{% extends 'AccountingMainBundle::base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/kendoui/css/kendo.common.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/kendoui/css/kendo.default.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/kendoui/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundles/kendoui/js/kendo.web.min.js') }}"></script>
+    {% block javascripts_embedded %}{% endblock %}
+{% endblock %}

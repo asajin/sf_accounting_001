@@ -1,0 +1,93 @@
+{# src/Accounting/DeliveriesBundle/Resources/views/Page/index.html.twig #}
+{% extends 'AccountingDeliveriesBundle::Default/index.html.twig' %}
+
+{% block javascripts_embedded %}
+        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
+<script>
+$(document).ready(function() {
+$("#grid").kendoGrid({
+    dataSource: {
+        data: createDeliveries(30),
+        schema: {
+            model: {
+                fields: {
+                    bye_date: { type: "string" },
+                    supplier_name: { type: "string" },
+                    product_name: { type: "string" },
+                    units: { type: "string" },
+                    stock: { type: "string" },
+                    currency_price: { type: "number" },
+                    local_price: { type: "number" },
+                    amount: { type: "number" },
+                    currency_rate: { type: "number" }
+                }
+            }
+        },
+        pageSize: 10,
+        //group: { field: "bye_date", aggregates: [{ field: "stock", aggregate: "sum"}] },
+        //aggregate: [{field: "stock", aggregate: "sum"}]
+    },
+    height: 500,
+    scrollable: true,
+    sortable: true,
+    filterable: true,
+    pageable: {
+        pageSizes: true,
+        refresh: true
+    },
+    toolbar: ["create"],
+    editable: "popup",
+    columns: [
+        {
+            hidden : true,
+            field: "bye_date",
+            title: "Bye Date",
+            width: 60
+            //groupHeaderTemplate: 'Bye Date: #= value #'
+        },
+        {
+            field: "supplier_name",
+            title: "Supplier Name",
+            width: 80
+        },
+        {
+            field: "product_name",
+            title: "Product Name",
+            width: 80
+        },
+        {
+            field: "stock",
+            title: "Stock (units)",
+            width: 50
+            //groupFooterTemplate: 'stock: #= sum#',
+            //footerTemplate: 'stock: #= sum#'
+        },
+        {
+            field: "currency_price",
+            title: "Price<br>Currency",
+            width: 50
+        },
+        {
+            field: "local_price",
+            title: "Price<br>Lei",
+            width: 50
+            //aggregates: ["average"],
+            //groupHeaderTemplate: 'Amount: #= value#'
+        },
+        {
+            field: "amount",
+            title: "Amount",
+            width: 50,
+            groupFooterTemplate: 'total: <i>#= Math.round(sum*100)/100#</i>',
+            footerTemplate: 'total: <b>#= Math.round(sum*100)/100#</b>'
+        },
+        {
+            field: "currency_rate",
+            title: "Change Rate<br>(Currency/Lei)",
+            width: 50
+        }
+    ]
+});
+});
+</script>
+{% endblock %}

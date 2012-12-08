@@ -1,0 +1,107 @@
+{# src/Accounting/DeliveriesBundle/Resources/views/Page/index.html.twig #}
+{% extends 'AccountingDeliveriesBundle::layout.html.twig' %}
+
+{% block body %}
+    <h2>Deliveries</h2>
+    <ul id="menu">
+        <li><a href="{{ path('AccountingDeliveriesBundle_index') }}">All</a></li>
+        <li><a href="{{ path('AccountingDeliveriesBundle_filter') }}">Filter by week/month</a></li>
+        <li><a href="{{ path('AccountingDeliveriesBundle_new') }}">Add entry</a></li>
+    </ul>
+    <div id="clientsDb">
+
+      {% block form %}{% endblock %}
+
+        <div id="grid" style="height: 500px"></div>
+
+    </div>
+{% endblock %}
+    
+    
+{% block javascripts_embedded %}
+        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
+<script>
+$(document).ready(function() {
+$("#grid").kendoGrid({
+    dataSource: {
+        data: createDeliveries(10),
+        schema: {
+            model: {
+                fields: {
+                    bye_date: { type: "string" },
+                    supplier_name: { type: "string" },
+                    product_name: { type: "string" },
+                    units: { type: "string" },
+                    stock: { type: "string" },
+                    currency_price: { type: "number" },
+                    local_price: { type: "number" },
+                    amount: { type: "number" },
+                    currency_rate: { type: "number" }
+                }
+            }
+        },
+        pageSize: 10,
+        group: { field: "bye_date", aggregates: [{ field: "amount", aggregate: "sum"}] },
+        aggregate: [{field: "amount", aggregate: "sum"}]
+    },
+    height: 500,
+    scrollable: true,
+    sortable: true,
+    filterable: true,
+    pageable: {
+        pageSizes: true,
+        refresh: true
+    },
+    columns: [
+        {
+            field: "bye_date",
+            title: "Bye Date",
+            width: 60,
+            //groupHeaderTemplate: 'Bye Date: #= value #'
+        },
+        {
+            field: "supplier_name",
+            title: "Supplier Name",
+            width: 80
+        },
+        {
+            field: "product_name",
+            title: "Product Name",
+            width: 80
+        },
+        {
+            field: "stock",
+            title: "Stock (units)",
+            width: 50
+        },
+        {
+            field: "currency_price",
+            title: "Price<br>Currency",
+            width: 50
+        },
+        {
+            field: "local_price",
+            title: "Price<br>Lei",
+            width: 50
+            //aggregates: ["average"],
+            //groupHeaderTemplate: 'Amount: #= value#'
+        },
+        {
+            field: "amount",
+            title: "Amount",
+            //format: "{0:c}",
+            width: 50,
+            groupHeaderTemplate: 'total: #= sum #',
+            groupFooterTemplate: '<u>total: #= Math.round(sum*100)/100#</u>',
+            footerTemplate: '<b>total: #= Math.round(sum*100)/100#</b>'
+        },
+        {
+            field: "currency_rate",
+            title: "Change Rate<br>(Currency/Lei)",
+            width: 50
+        }
+    ]
+});
+});
+</script>
+{% endblock %}

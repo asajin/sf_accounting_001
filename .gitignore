@@ -5,12 +5,10 @@ app/bootstrap*
 */logs/*
 */cache/*
 web/uploads/*
-web/bundles/*
 
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
 
 Symfony_Standard_Vendors_2.1.4*
-
 nbproject*

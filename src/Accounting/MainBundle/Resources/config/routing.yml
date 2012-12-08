@@ -1,0 +1,22 @@
+# src/Accounting/MainBundle/Resources/config/routing.yml
+accounting_main_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: AccountingMainBundle:Default:index }
+
+AccountingMainBundle_homepage:
+    pattern:  /
+    defaults: { _controller: AccountingMainBundle:Page:index }
+    requirements:
+        _method:  GET
+
+AccountingMainBundle_about:
+    pattern:  /about
+    defaults: { _controller: AccountingMainBundle:Page:about }
+    requirements:
+        _method:  GET
+
+AccountingMainBundle_contact:
+    pattern:  /contact
+    defaults: { _controller: AccountingMainBundle:Page:contact }
+    requirements:
+        _method:  GET
