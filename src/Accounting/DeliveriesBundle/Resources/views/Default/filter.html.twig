@@ -42,56 +42,56 @@
 $(document).ready(function() {
  // create DatePicker from input HTML element
  
-                     $("#tabstrip").kendoTabStrip({
-						animation:	{
-							open: {
-								effects: "fadeIn"
-							}
-						}
-					
-					});
+    $("#tabstrip").kendoTabStrip({
+       animation:	{
+           open: {
+               effects: "fadeIn"
+           }
+       }
+
+    });
  
-                    function startChange() {
-                        var startDate = start.value();
+    function startChange() {
+        var startDate = start.value();
 
-                        if (startDate) {
-                            startDate = new Date(startDate);
-                            startDate.setDate(startDate.getDate() + 1);
-                            end.min(startDate);
-                        }
-                    }
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate() + 1);
+            end.min(startDate);
+        }
+    }
 
-                    function endChange() {
-                        var endDate = end.value();
+    function endChange() {
+        var endDate = end.value();
 
-                        if (endDate) {
-                            endDate = new Date(endDate);
-                            endDate.setDate(endDate.getDate() - 1);
-                            start.max(endDate);
-                        }
-                    }
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+            start.max(endDate);
+        }
+    }
 
-                    var start = $("#start").kendoDatePicker({
-                        change: startChange
-                    }).data("kendoDatePicker");
+    var start = $("#start").kendoDatePicker({
+        change: startChange
+    }).data("kendoDatePicker");
 
-                    var end = $("#end").kendoDatePicker({
-                        change: endChange
-                    }).data("kendoDatePicker");
+    var end = $("#end").kendoDatePicker({
+        change: endChange
+    }).data("kendoDatePicker");
 
-                    start.max(end.value());
-                    end.min(start.value());
+    start.max(end.value());
+    end.min(start.value());
 
-                $("#monthpicker").kendoDatePicker({
-                    // defines the start view
-                    start: "year",
+$("#monthpicker").kendoDatePicker({
+    // defines the start view
+    start: "year",
 
-                    // defines when the calendar should return date
-                    depth: "year",
+    // defines when the calendar should return date
+    depth: "year",
 
-                    // display month and year in the input
-                    format: "MMMM yyyy"
-                });
+    // display month and year in the input
+    format: "MMMM yyyy"
+});
                 
 $("#grid").kendoGrid({
     dataSource: {
@@ -99,7 +99,7 @@ $("#grid").kendoGrid({
         schema: {
             model: {
                 fields: {
-                    bye_date: { type: "string" },
+                    bye_date: { type: "date" },
                     supplier_name: { type: "string" },
                     product_name: { type: "string" },
                     units: { type: "string" },
@@ -112,8 +112,7 @@ $("#grid").kendoGrid({
             }
         },
         pageSize: 10,
-        //group: { field: "bye_date", aggregates: [{ field: "stock", aggregate: "sum"}] },
-        aggregate: [{field: "stock", aggregate: "sum"}]
+        aggregate: [{field: "amount", aggregate: "sum"}]
     },
     height: 500,
     scrollable: true,
@@ -126,50 +125,42 @@ $("#grid").kendoGrid({
     },
     columns: [
         {
-            //hidden : true,
             field: "bye_date",
-            title: "Bye Date"
-            //width: 60
-            //groupHeaderTemplate: 'Bye Date: #= value #'
+            title: "Bye Date",
+            template: '#= kendo.toString(bye_date,"dd MMMM yyyy") #'
         },
         {
             field: "supplier_name",
             title: "Supplier Name"
-            //width: 80
         },
         {
             field: "product_name",
             title: "Product Name"
-            //width: 80
         },
         {
             field: "stock",
-            title: "Stock (units)",
-            //width: 50,
-            //groupFooterTemplate: 'stock: #= sum#',
-            footerTemplate: 'stock: #= sum#'
+            title: "Stock (units)"
         },
         {
             field: "currency_price",
-            title: "Price<br>Currency"
-            //width: 50
+            title: "Price<br>Currency",
+            template: ' #= currency_price # * '
+                        +'<font title="Currency Rate">#= currency_rate #</font>'
         },
         {
             field: "local_price",
             title: "Price<br>Lei"
-            //width: 50
         },
         {
             field: "amount",
             title: "Amount",
-            groupFooterTemplate: 'total: #= Math.round(sum*100)/100#',
-            footerTemplate: 'total: #= Math.round(sum*100)/100#'
-            //width: 50
+            groupFooterTemplate: 'total: #= kendo.toString(sum, "n")#',
+            footerTemplate: 'total: #= kendo.toString(sum, "n")#'
         },
         {
+            hidden: true,
             field: "currency_rate",
             title: "Change Rate<br>(Currency/Lei)"
-            //width: 50
         }
     ]
 });

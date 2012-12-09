@@ -11,4 +11,5 @@ app/config/parameters.ini
 app/config/parameters.yml
 
 Symfony_Standard_Vendors_2.1.4*
-nbproject*
+nbproject/*
+doc/*

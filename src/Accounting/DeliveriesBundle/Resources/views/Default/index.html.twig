@@ -28,7 +28,7 @@ $("#grid").kendoGrid({
         schema: {
             model: {
                 fields: {
-                    bye_date: { type: "string" },
+                    bye_date: { type: "date" },
                     supplier_name: { type: "string" },
                     product_name: { type: "string" },
                     units: { type: "string" },
@@ -54,10 +54,11 @@ $("#grid").kendoGrid({
     },
     columns: [
         {
+            hidden: true,
             field: "bye_date",
             title: "Bye Date",
             width: 60,
-            //groupHeaderTemplate: 'Bye Date: #= value #'
+            groupHeaderTemplate: 'Bye Date : #= kendo.toString(value,"<u>ddd</u> - dd MMMM yyyy") #'
         },
         {
             field: "supplier_name",
@@ -75,27 +76,31 @@ $("#grid").kendoGrid({
             width: 50
         },
         {
+            field: "local_price",
+            title: "Price<br>Lei",
+            width: 50,
+            template: ' <small style="color:gray">'
+                        +'<font title="Price Currency">#= currency_price #</font> * '
+                        +'<font title="Currency Rate">#= currency_rate #</font>'
+                      +'</small><br/>'
+                +' #= local_price #'
+        },
+        {
+            field: "amount",
+            title: "<b>Amount</b>",
+            width: 50,
+            groupHeaderTemplate: 'total: #= sum #',
+            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
+            footerTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>'
+        },
+        {
+            hidden: true,
             field: "currency_price",
             title: "Price<br>Currency",
             width: 50
         },
         {
-            field: "local_price",
-            title: "Price<br>Lei",
-            width: 50
-            //aggregates: ["average"],
-            //groupHeaderTemplate: 'Amount: #= value#'
-        },
-        {
-            field: "amount",
-            title: "Amount",
-            //format: "{0:c}",
-            width: 50,
-            groupHeaderTemplate: 'total: #= sum #',
-            groupFooterTemplate: '<u>total: #= Math.round(sum*100)/100#</u>',
-            footerTemplate: '<b>total: #= Math.round(sum*100)/100#</b>'
-        },
-        {
+            hidden: true,
             field: "currency_rate",
             title: "Change Rate<br>(Currency/Lei)",
             width: 50

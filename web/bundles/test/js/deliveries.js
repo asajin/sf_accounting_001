@@ -7,7 +7,7 @@ var firstNames = ["Nancy", "Andrew", "Janet", "Margaret", "Steven", "Michael", "
     "Software Developer", "Inside Sales Coordinator", "Chief Techical Officer", "Chief Execute Officer"],
     birthDates = [new Date("1948/12/08"), new Date("1952/02/19"), new Date("1963/08/30"), new Date("1937/09/19"), new Date("1955/03/04"), new Date("1963/07/02"), new Date("1960/05/29"), new Date("1958/01/09"), new Date("1966/01/27"), new Date("1966/03/27")],
     unitsList = ['l','un','m','ml','g','mg'],
-    pricesList = ['12.34','23.43','12.12','32.87','16.32','28.43','17.76','37,84','95'],
+    pricesList = [12.34,23.43,12.12,32.87,16.32,28.43,17.76,37,84,95],
     stockList = [34,23,12,76,34,56,15,37,84,95];
 
     var data = [],
@@ -22,12 +22,12 @@ var firstNames = ["Nancy", "Andrew", "Janet", "Margaret", "Steven", "Michael", "
 
         data.push({
             id: i + 1,
-            bye_date: birthDate.toDateString(),
+            bye_date: birthDate,
             supplier_name: lastName,
             product_name: firstName,
             stock: stockRandom + ' ' + unitRandom,
-            currency_price: Math.round(priceRandom* 15.5 * 100)/100,
-            local_price: Math.round(priceRandom*100)/100,
+            currency_price: Math.round(priceRandom * 100)/100,
+            local_price: Math.round(priceRandom* 15.5 *100)/100,
             amount: ( Math.round(stockRandom*100)/100 * Math.round(priceRandom*100)/100),
             currency_rate: 15.5
         });
