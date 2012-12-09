@@ -11,7 +11,7 @@ $("#grid").kendoGrid({
         schema: {
             model: {
                 fields: {
-                    bye_date: { type: "string" },
+                    bye_date: { type: "date" },
                     supplier_name: { type: "string" },
                     product_name: { type: "string" },
                     units: { type: "string" },
@@ -24,8 +24,7 @@ $("#grid").kendoGrid({
             }
         },
         pageSize: 10,
-        //group: { field: "bye_date", aggregates: [{ field: "stock", aggregate: "sum"}] },
-        //aggregate: [{field: "stock", aggregate: "sum"}]
+        aggregate: [{field: "amount", aggregate: "sum"}]
     },
     height: 500,
     scrollable: true,
@@ -43,7 +42,6 @@ $("#grid").kendoGrid({
             field: "bye_date",
             title: "Bye Date",
             width: 60
-            //groupHeaderTemplate: 'Bye Date: #= value #'
         },
         {
             field: "supplier_name",
@@ -59,8 +57,6 @@ $("#grid").kendoGrid({
             field: "stock",
             title: "Stock (units)",
             width: 50
-            //groupFooterTemplate: 'stock: #= sum#',
-            //footerTemplate: 'stock: #= sum#'
         },
         {
             field: "currency_price",
@@ -71,8 +67,6 @@ $("#grid").kendoGrid({
             field: "local_price",
             title: "Price<br>Lei",
             width: 50
-            //aggregates: ["average"],
-            //groupHeaderTemplate: 'Amount: #= value#'
         },
         {
             field: "amount",
