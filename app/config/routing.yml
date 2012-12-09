@@ -1,3 +1,7 @@
+accounting_warehouse:
+    resource: "@AccountingWarehouseBundle/Resources/config/routing.yml"
+    prefix:   /
+
 accounting_deliveries:
     resource: "@AccountingDeliveriesBundle/Resources/config/routing.yml"
     prefix:   /
