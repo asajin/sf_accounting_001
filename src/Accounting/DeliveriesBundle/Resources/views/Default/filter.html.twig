@@ -1,4 +1,4 @@
-{# src/Accounting/DeliveriesBundle/Resources/views/Page/index.html.twig #}
+{# src/Accounting/DeliveriesBundle/Resources/views/Default/index.html.twig #}
 {% extends 'AccountingDeliveriesBundle::Default/index.html.twig' %}
 
 {% block form %}
@@ -102,7 +102,7 @@ $("#grid").kendoGrid({
                     bye_date: { type: "date" },
                     supplier_name: { type: "string" },
                     product_name: { type: "string" },
-                    units: { type: "string" },
+                    unit: { type: "string" },
                     stock: { type: "string" },
                     currency_price: { type: "number" },
                     local_price: { type: "number" },
@@ -139,7 +139,8 @@ $("#grid").kendoGrid({
         },
         {
             field: "stock",
-            title: "Stock (units)"
+            title: "Stock (units)",
+            template: '#= stock # #= unit #'
         },
         {
             field: "currency_price",
