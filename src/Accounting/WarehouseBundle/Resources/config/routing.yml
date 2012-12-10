@@ -1,0 +1,3 @@
+AccountingWarehouseBundle_index:
+    pattern:  /warehouse
+    defaults: { _controller: AccountingWarehouseBundle:Default:index }

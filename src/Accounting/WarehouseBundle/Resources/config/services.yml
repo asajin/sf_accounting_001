@@ -1,0 +1,7 @@
+parameters:
+#    accounting_warehouse.example.class: Accounting\WarehouseBundle\Example
+
+services:
+#    accounting_warehouse.example:
+#        class: %accounting_warehouse.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
