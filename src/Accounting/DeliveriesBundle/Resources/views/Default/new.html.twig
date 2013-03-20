@@ -12,8 +12,8 @@ $("#grid").kendoGrid({
             model: {
                 fields: {
                     bye_date: { type: "date" },
-                    supplier_name: { type: "string" },
-                    product_name: { type: "string" },
+                    supplier_name: { defaultValue: { Id: 1, Title: "Supplier"} },
+                    product_name: { defaultValue: { Id: 1, Title: "Product"} },
                     unit: { type: "string" },
                     stock: { type: "string" },
                     currency_price: { type: "number" },
@@ -46,23 +46,29 @@ $("#grid").kendoGrid({
         {
             field: "supplier_name",
             title: "Supplier Name",
-            width: 80
+            width: 80,
+            editor: suppliersDropDownEditor,
+            template: '#= supplier_name.Title #'
         },
         {
             field: "product_name",
             title: "Product Name",
-            width: 80
+            width: 80,
+            editor: productsDropDownEditor,
+            template: '#= product_name.Title #'
+        },
+        {
+            field: "unit",
+            title: "Units",
+            width: 20,
+            editor: unitsDropDownEditor,
+            template: '#= unit #'
         },
         {
             field: "stock",
-            title: "Stock (units)",
-            width: 50,
-            template: '#= stock # #= unit #'
-        },
-        {
-            hidden: true,
-            field: "unit",
-            title: "Units"
+            title: "Stock",
+            width: 30,
+            template: '#= stock #'
         },
         {
             field: "currency_price",
@@ -88,6 +94,36 @@ $("#grid").kendoGrid({
         }
     ]
 });
+var items = [ { Id: 0, Title: "Manager" }, { Id: 1, Title: "Developer" }, { Id: 2, Title: "Vice President" } ];
+                function suppliersDropDownEditor(container, options) {
+                    $('<input required data-text-field="Title" data-value-field="Id" data-bind="value:' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+                            autoBind: false,
+                            dataSource: items
+                        });
+                }
+                
+var items2 = [ { Id: 0, Title: "Banan" }, { Id: 1, Title: "Ornage" }, { Id: 2, Title: "Apples" } ];
+                function productsDropDownEditor(container, options) {
+                    $('<input required data-text-field="Title" data-value-field="Id" data-bind="value:' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+                            autoBind: false,
+                            dataSource: items2
+                        });
+                }
+                
+//var items2 = [ { Id: 0, Title: "m" }, { Id: 1, Title: "mg" }, { Id: 2, Title: "l" } ];
+var items3 = [ "m", "mg", "l" ];
+                function unitsDropDownEditor(container, options) {
+                    $('<input type="text" data-bind="value:' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+                            autoBind: false,
+                            dataSource: items3
+                        });
+                }
 });
 </script>
 {% endblock %}

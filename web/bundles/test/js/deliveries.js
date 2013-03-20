@@ -23,8 +23,8 @@ var firstNames = ["Nancy", "Andrew", "Janet", "Margaret", "Steven", "Michael", "
         data.push({
             id: i + 1,
             bye_date: birthDate,
-            supplier_name: lastName,
-            product_name: firstName,
+            supplier_name: {Id: i, Title: lastName},
+            product_name: {Id: i, Title: firstName},
             stock: stockRandom,
             unit: unitRandom,
             currency_price: Math.round(priceRandom * 100)/100,
