@@ -1,0 +1,6 @@
+# src/Accounting/SaleOffersBundle/Resources/config/routing.yml
+AccountingSaleOffersBundle_index:
+    pattern:  /saleOffers
+    defaults: { _controller: AccountingSaleOffersBundle:Default:index }
+    requirements:
+        _method:  GET
