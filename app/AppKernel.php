@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Accounting\MainBundle\AccountingMainBundle(),
             new Accounting\DeliveriesBundle\AccountingDeliveriesBundle(),
             new Accounting\WarehouseBundle\AccountingWarehouseBundle(),
+            new Accounting\SupplierPrestationsBundle\AccountingSupplierPrestationsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
