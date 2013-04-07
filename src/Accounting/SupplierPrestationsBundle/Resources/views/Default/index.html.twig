@@ -1,0 +1,113 @@
+{# src/Accounting/SupplierPrestationsBundle/Resources/views/Default/index.html.twig #}
+{% extends 'AccountingSupplierPrestationsBundle::layout.html.twig' %}
+
+{% block body %}
+    <h2>Deliveries</h2>
+    <ul id="menu">
+        <li><a href="{{ path('AccountingSupplierPrestationsBundle_index') }}">All</a></li>
+        <li><a href="{{ path('AccountingSupplierPrestationsBundle_filter') }}">Filter by week/month</a></li>
+        <li><a href="{{ path('AccountingSupplierPrestationsBundle_new') }}">Add entry</a></li>
+    </ul>
+    <div id="clientsDb">
+
+      {% block form %}{% endblock %}
+
+        <div id="grid" style="height: 500px"></div>
+
+    </div>
+{% endblock %}
+    
+    
+{% block javascripts_embedded %}
+        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
+<script>
+$(document).ready(function() {
+$("#grid").kendoGrid({
+    dataSource: {
+        data: createDeliveries(10),
+        schema: {
+            model: {
+                fields: {
+                    bye_date: { type: "date" },
+                    supplier_name: { type: "string" },
+                    product_name: { type: "string" },
+                    unit: { type: "string" },
+                    stock: { type: "string" },
+                    currency_price: { type: "number" },
+                    local_price: { type: "number" },
+                    amount: { type: "number" },
+                    currency_rate: { type: "number" }
+                }
+            }
+        },
+        pageSize: 10,
+        group: { field: "bye_date", aggregates: [{ field: "amount", aggregate: "sum"}] },
+        aggregate: [{field: "amount", aggregate: "sum"}]
+    },
+    height: 500,
+    scrollable: true,
+    sortable: true,
+    filterable: true,
+    pageable: {
+        pageSizes: true,
+        refresh: true
+    },
+    columns: [
+        {
+            hidden: true,
+            field: "bye_date",
+            title: "Bye Date",
+            width: 60,
+            groupHeaderTemplate: 'Bye Date : #= kendo.toString(value,"<u>ddd</u> - dd MMMM yyyy") #'
+        },
+        {
+            field: "supplier_name",
+            title: "Supplier Name",
+            width: 80
+        },
+        {
+            field: "product_name",
+            title: "Product Name",
+            width: 80
+        },
+        {
+            field: "stock",
+            title: "Stock (units)",
+            width: 50,
+            template: '#= stock # #= unit #'
+        },
+        {
+            field: "local_price",
+            title: "Price<br>Lei",
+            width: 50,
+            template: ' <small style="color:gray">'
+                        +'<font title="Price Currency">#= currency_price #</font> * '
+                        +'<font title="Currency Rate">#= currency_rate #</font>'
+                      +'</small><br/>'
+                +' #= local_price #'
+        },
+        {
+            field: "amount",
+            title: "<b>Amount</b>",
+            width: 50,
+            groupHeaderTemplate: 'total: #= sum #',
+            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
+            footerTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>'
+        },
+        {
+            hidden: true,
+            field: "currency_price",
+            title: "Price<br>Currency",
+            width: 50
+        },
+        {
+            hidden: true,
+            field: "currency_rate",
+            title: "Change Rate<br>(Currency/Lei)",
+            width: 50
+        }
+    ]
+});
+});
+</script>
+{% endblock %}
