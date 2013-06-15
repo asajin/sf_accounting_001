@@ -1,0 +1,6 @@
+# src/Accounting/SalePrestationsBundle/Resources/config/routing.yml
+AccountingSalePrestationsBundle_index:
+    pattern:  /salePrestations
+    defaults: { _controller: AccountingSalePrestationsBundle:Default:index }
+    requirements:
+        _method:  GET

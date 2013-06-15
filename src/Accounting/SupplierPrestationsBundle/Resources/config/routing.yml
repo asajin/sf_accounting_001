@@ -1,0 +1,18 @@
+# src/Accounting/SupplierPrestationsBundle/Resources/config/routing.yml
+AccountingSupplierPrestationsBundle_index:
+    pattern:  /supplierPrestations
+    defaults: { _controller: AccountingSupplierPrestationsBundle:Default:index }
+    requirements:
+        _method:  GET
+
+AccountingSupplierPrestationsBundle_filter:
+    pattern:  /supplierPrestations/filter
+    defaults: { _controller: AccountingSupplierPrestationsBundle:Default:filter }
+    requirements:
+        _method:  GET
+        
+AccountingSupplierPrestationsBundle_new:
+    pattern:  /supplierPrestations/new
+    defaults: { _controller: AccountingSupplierPrestationsBundle:Default:new }
+    requirements:
+        _method:  GET
