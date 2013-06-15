@@ -1,0 +1,82 @@
+{# src/Accounting/ChargesBundle/Resources/views/Page/index.html.twig #}
+{% extends 'AccountingChargesBundle::layout.html.twig' %}
+
+{% block body %}
+    <h2>Charges</h2>
+    <div id="clientsDb">
+
+        {% block form %}{% endblock %}
+
+        <div id="grid" style="height: 350px"></div>
+
+    </div>
+{% endblock %}
+    
+    
+{% block javascripts_embedded %}
+        <script src="{{ asset('bundles/test/js/charges.js') }}"></script>
+        {% block javascripts_addons %}{% endblock %}
+<script>
+$(document).ready(function() {
+$("#grid").kendoGrid({
+    dataSource: {
+        data: createCharges(50),
+        schema: {
+            model: {
+                fields: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    date_0112: { type: "number" },
+                    date_0212: { type: "number" },
+                    total: { type: "number" }
+                }
+            }
+        },
+        pageSize: 10,
+        group: { field: "type", aggregates: [
+                { field: "date_0112", aggregate: "sum"}, 
+                { field: "date_0212", aggregate: "sum"},
+                { field: "total", aggregate: "sum"}] }
+    },
+    height: 350,
+    scrollable: true,
+    sortable: true,
+    filterable: true,
+    pageable: {
+        pageSizes: true,
+        refresh: true
+        //input: true
+        //numeric: false
+    },
+    columns: [
+        {
+            field: "name",
+            title: "Name",
+        },
+        {
+            hidden: true,
+            field: "type",
+            title: "Type",
+            groupHeaderTemplate: 'Type : #= value #'
+        },
+        {
+            field: "date_0112",
+            title: "Jan-12",
+            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
+        },
+        {
+            field: "date_0212",
+            title: "Feb-12",
+            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
+        },
+        {
+            field: "total",
+            title: "<b>Total</b>",
+            template: '<b>#= kendo.toString(total, "n") #</b>',
+            groupFooterTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>',
+        }
+    ]
+});
+});
+</script>
+{% endblock %}
