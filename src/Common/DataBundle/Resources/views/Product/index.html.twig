@@ -1,0 +1,49 @@
+<h1>Product list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Last_price</th>
+            <th>Last_stock</th>
+            <th>Last_add_date</th>
+            <th>Unit</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('product_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.code }}</td>
+            <td>{{ entity.name }}</td>
+            <td>{{ entity.lastprice }}</td>
+            <td>{{ entity.laststock }}</td>
+            <td>{% if entity.lastadddate %}{{ entity.lastadddate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            <td>{{ entity.unit }}</td>
+            <td>{{ entity.description }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('product_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('product_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('product_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>
