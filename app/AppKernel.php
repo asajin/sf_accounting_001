@@ -23,6 +23,11 @@ class AppKernel extends Kernel
             new Accounting\MainBundle\AccountingMainBundle(),
             new Accounting\DeliveriesBundle\AccountingDeliveriesBundle(),
             new Accounting\WarehouseBundle\AccountingWarehouseBundle(),
+            new Accounting\SalePrestationsBundle\AccountingSalePrestationsBundle(),
+            new Accounting\SaleOffersBundle\AccountingSaleOffersBundle(),
+            new Accounting\CostsBundle\AccountingCostsBundle(),
+            new Accounting\ProfitBundle\AccountingProfitBundle(),
+            new Accounting\OffersBundle\AccountingOffersBundle(),
             new Accounting\SupplierPrestationsBundle\AccountingSupplierPrestationsBundle(),
         );
 

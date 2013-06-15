@@ -1,0 +1,83 @@
+{# src/Accounting/SaleOffersBundle/Resources/views/Page/index.html.twig #}
+{% extends 'AccountingSaleOffersBundle::layout.html.twig' %}
+
+{% block body %}
+    <h2>Sale Offers</h2>
+    <div id="clientsDb">
+
+        <div id="grid" style="height: 350px"></div>
+
+    </div>
+{% endblock %}
+    
+    
+{% block javascripts_embedded %}
+        <script src="{{ asset('bundles/test/js/sale_offers.js') }}"></script>
+<script>
+$(document).ready(function() {
+$("#grid").kendoGrid({
+    dataSource: {
+        data: createPriceList(50),
+        pageSize: 10
+    },
+    height: 350,
+    scrollable: true,
+    sortable: true,
+    filterable: true,
+    pageable: {
+        pageSizes: true,
+        refresh: true
+        //input: true
+        //numeric: false
+    },
+    columns: [
+        {
+            field: "date",
+            title: "Date",
+            width: 20
+        },
+        {
+            field: "client",
+            title: "Client",
+            width: 30
+        },
+        {
+            field: "code",
+            title: "Code",
+            width: 15
+        },
+        {
+            field: "product",
+            title: "Products Package",
+            width: 20
+        },
+        {
+            field: "units",
+            title: "Unit",
+            width: 10
+        },
+        {
+            field: "count",
+            title: "Count",
+            width: 10
+        },
+        {
+            field: "price",
+            title: "Price",
+            width: 10
+        },
+        {
+            field: "amount",
+            title: "Amount",
+            width: 10
+        },
+        {
+            field: "real_amount",
+            title: "Real amount",
+            width: 10
+        }
+    ]
+});
+});
+</script>
+{% endblock %}

@@ -2,6 +2,26 @@ accounting_supplier_prestations:
     resource: "@AccountingSupplierPrestationsBundle/Resources/config/routing.yml"
     prefix:   /
 
+accounting_offers:
+    resource: "@AccountingOffersBundle/Resources/config/routing.yml"
+    prefix:   /
+
+accounting_profit:
+    resource: "@AccountingProfitBundle/Resources/config/routing.yml"
+    prefix:   /
+
+accounting_costs:
+    resource: "@AccountingCostsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+accounting_sale_offers:
+    resource: "@AccountingSaleOffersBundle/Resources/config/routing.yml"
+    prefix:   /
+
+accounting_sale_prestations:
+    resource: "@AccountingSalePrestationsBundle/Resources/config/routing.yml"
+    prefix:   /
+
 accounting_warehouse:
     resource: "@AccountingWarehouseBundle/Resources/config/routing.yml"
     prefix:   /
