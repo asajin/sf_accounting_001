@@ -1,0 +1,170 @@
+{# src/Accounting/SuppliersProductsBundle/Resources/views/Default/index.html.twig #}
+{% extends 'AccountingSuppliersProductsBundle::Default/index.html.twig' %}
+
+{% block form %}
+      <form action="{{ path('AccountingSupplierPrestationsBundle_filter') }}" >
+        
+        <div id="tabstrip">
+          <ul>
+            <li class="k-state-active">
+              Month filter
+            </li>
+            <li>
+              Range filter
+            </li>
+          </ul>
+          <div>
+            <div class="weather">
+              <input id="monthpicker" value="November 2011" style="width:150px" />
+              
+              <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+            </div>
+          </div>
+          <div>
+            <div class="weather">
+              <label for="start">Start date:</label>
+              <input id="start" value="10/10/2011" />
+
+              <label for="end" style="margin-left:3em">End date:</label>
+              <input id="end" value="10/10/2012"/>
+              
+              <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+            </div>
+          </div>
+        </div>
+
+      </form><br />
+{% endblock %}
+
+{% block javascripts_embedded %}
+        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
+<script>
+$(document).ready(function() {
+ // create DatePicker from input HTML element
+ 
+    $("#tabstrip").kendoTabStrip({
+       animation:	{
+           open: {
+               effects: "fadeIn"
+           }
+       }
+
+    });
+ 
+    function startChange() {
+        var startDate = start.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate() + 1);
+            end.min(startDate);
+        }
+    }
+
+    function endChange() {
+        var endDate = end.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+            start.max(endDate);
+        }
+    }
+
+    var start = $("#start").kendoDatePicker({
+        change: startChange
+    }).data("kendoDatePicker");
+
+    var end = $("#end").kendoDatePicker({
+        change: endChange
+    }).data("kendoDatePicker");
+
+    start.max(end.value());
+    end.min(start.value());
+
+$("#monthpicker").kendoDatePicker({
+    // defines the start view
+    start: "year",
+
+    // defines when the calendar should return date
+    depth: "year",
+
+    // display month and year in the input
+    format: "MMMM yyyy"
+});
+                
+$("#grid").kendoGrid({
+    dataSource: {
+        data: createDeliveries(30),
+        schema: {
+            model: {
+                fields: {
+                    bye_date: { type: "date" },
+                    supplier_name: { type: "string" },
+                    product_name: { type: "string" },
+                    unit: { type: "string" },
+                    stock: { type: "string" },
+                    currency_price: { type: "number" },
+                    local_price: { type: "number" },
+                    amount: { type: "number" },
+                    currency_rate: { type: "number" }
+                }
+            }
+        },
+        pageSize: 10,
+        aggregate: [{field: "amount", aggregate: "sum"}]
+    },
+    height: 500,
+    scrollable: true,
+    sortable: true,
+    filterable: true,
+    columnMenu: true,
+    pageable: {
+        pageSizes: true,
+        refresh: true
+    },
+    columns: [
+        {
+            field: "bye_date",
+            title: "Bye Date",
+            template: '#= kendo.toString(bye_date,"dd MMMM yyyy") #'
+        },
+        {
+            field: "supplier_name",
+            title: "Supplier Name"
+        },
+        {
+            field: "product_name",
+            title: "Product Name"
+        },
+        {
+            field: "stock",
+            title: "Stock (units)",
+            template: '#= stock # #= unit #'
+        },
+        {
+            field: "currency_price",
+            title: "Price<br>Currency",
+            template: ' #= currency_price # * '
+                        +'<font title="Currency Rate">#= currency_rate #</font>'
+        },
+        {
+            field: "local_price",
+            title: "Price<br>Lei"
+        },
+        {
+            field: "amount",
+            title: "Amount",
+            groupFooterTemplate: 'total: #= kendo.toString(sum, "n")#',
+            footerTemplate: 'total: #= kendo.toString(sum, "n")#'
+        },
+        {
+            hidden: true,
+            field: "currency_rate",
+            title: "Change Rate<br>(Currency/Lei)"
+        }
+    ]
+});
+});
+</script>
+{% endblock %}
