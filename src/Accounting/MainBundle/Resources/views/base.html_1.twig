@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Accounting{% endblock %}</title>
+        <title>{% block title %}Demo Bundle{% endblock %}</title>
         <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/accounting/css/demo.css') }}" />
         {% block stylesheets %}{% endblock %}
@@ -32,13 +32,9 @@
                     {% block content_header_more %}
                         <li><a href="{{ path('AccountingMainBundle_homepage') }}">Home</a> | </li>
                         <li><a href="{{ path('AccountingPriceListBundle_index') }}">Price List</a></li>
-                        <li><a href="{{ path('AccountingSupplierPrestationsBundle_index') }}">Suppliers Products</a></li>
-                        <li><a href="{{ path('AccountingWarehouseBundle_index') }}">Warehouse</a></li>
-                        <li><a href="{{ path('AccountingOffersBundle_index') }}">Offers</a></li>
-                        <li><a href="{{ path('AccountingSaleProductsBundle_index') }}">Sale Products</a></li>
-                        <li><a href="{{ path('AccountingSaleOffersBundle_index') }}">Sale Offers</a></li>
-                        <li><a href="{{ path('AccountingChargesBundle_index') }}">Charges</a></li>
-                        <li><a href="{{ path('AccountingProfitBundle_index') }}">Profit</a> | </li>
+                        <li><a href="{{ path('AccountingSupplierPrestationsBundle_index') }}">Deliveries</a></li>
+                        <li><a href="{{ path('AccountingWarehouseBundle_index') }}">Warehouse</a> | </li>
+                        <li><a href="{{ path('AccountingOffersBundle_index') }}">Services</a></li>
                         <li><a href="{{ path('AccountingMainBundle_about') }}">About</a></li>
                         <li><a href="{{ path('AccountingMainBundle_contact') }}">Contact</a></li>
                     {% endblock %}
