@@ -1,0 +1,12 @@
+# src/Accounting/ChargesBundle/Resources/config/routing.yml
+AccountingChargesBundle_index:
+    pattern:  /charges
+    defaults: { _controller: AccountingChargesBundle:Default:index }
+    requirements:
+        _method:  GET
+
+AccountingChargesBundle_filter:
+    pattern:  /charges/filter
+    defaults: { _controller: AccountingChargesBundle:Default:filter }
+    requirements:
+        _method:  GET
