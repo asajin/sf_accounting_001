@@ -16,3 +16,52 @@ AccountingSuppliersProductsBundle_new:
     defaults: { _controller: AccountingSuppliersProductsBundle:Default:new }
     requirements:
         _method:  GET
+
+AccountingSuppliersProductsBundle_list:
+    pattern:  /service/sp/list.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:list, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON
+
+AccountingSuppliersProductsBundle_listFull:
+    pattern:  /service/sp/full.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:listFull, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON
+
+AccountingSuppliersProductsBundle_create:
+    pattern:  /service/sp/create.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:create, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
+AccountingSuppliersProductsBundle_delete:
+    pattern:  /service/sp/delete.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:delete, _format: json, _locale: en }
+    requirements:
+        _method:  DELETE
+        _format: JSON
+
+AccountingSuppliersProductsBundle_createProduct:
+    pattern:  /service/sp/product/create.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:createProduct, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
+AccountingSuppliersProductsBundle_createSupplier:
+    pattern:  /service/sp/supplier/create.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:createSupplier, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
+AccountingSuppliersProductsBundle_dropdowns:
+    pattern:  /service/sp/dropdowns.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:dropdowns, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON

@@ -3,6 +3,10 @@
 namespace Accounting\SuppliersProductsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Common\DataBundle\Entity\Product;
+use Common\DataBundle\Entity\Supplier;
 
 class DefaultController extends Controller
 {
@@ -21,4 +25,149 @@ class DefaultController extends Controller
     {
         return $this->render('AccountingSuppliersProductsBundle:Default:new.html.twig');
     }
+
+    public function listAction()
+    {
+        $repository = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:TimePrice');
+        $query = $repository->createQueryBuilder('tp')
+                ->select('tp.local_price as local_price')
+                ->addSelect('tp.currency_price as currency_price')
+                ->addSelect('tp.currency_rate as currency_rate')
+                ->addSelect('tp.price_date as price_date')
+                ->addSelect('p.unit as unit')
+                ->addSelect('tp.stock as stock')
+                ->addSelect('p.name as product_name')
+                ->addSelect('s.name as supplier_name')
+                ->addSelect('(tp.local_price * tp.stock) as amount')
+                ->leftJoin('tp.product', 'p')
+                ->leftJoin('tp.supplier', 's')
+                ->getQuery();
+
+        $timePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
+
+        $response = new Response(json_encode($timePrices));
+
+        return $response;
+    }
+
+    public function listFullAction()
+    {
+        $repository = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:TimePrice');
+
+        $query = $repository->createQueryBuilder('tp')
+                ->select('tp, p, s')
+                ->leftJoin('tp.product', 'p')
+                ->leftJoin('tp.supplier', 's')
+                ->getQuery();
+
+        $timePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        $response = new Response(json_encode($timePrices));
+
+        return $response;
+    }
+
+    public function createAction(Request $request)
+    {
+        $models = json_decode($request->get('models'));
+        $models[0]->id = 3;
+
+        $response = new Response(json_encode($models[0]));
+
+        return $response;
+    }
+
+    public function deleteAction(Request $request)
+    {
+        $models = json_decode($request->get('models'));
+        $models[0]->id = 3;
+//        $models[0]->product->unit = $models[0]->unit;
+
+        $response = new Response(json_encode($models[0]));
+
+        return $response;
+    }
+
+    public function createProductAction(Request $request)
+    {
+        $models = json_decode($request->get('models'));
+
+        $product = new Product();
+        $product->setCode($models[0]->code);
+        $product->setName($models[0]->name);
+        $product->setUnit($models[0]->unit);
+        $product->setLastPrice(0);
+        $product->setLastStock(0);
+        $product->setLastAddDate(NULL);
+        $product->setDescription($models[0]->description);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($product);
+        $em->flush();
+
+        $models[0]->id = $product->getId();
+
+        $response = new Response(json_encode($models[0]));
+
+        return $response;
+    }
+
+    public function createSupplierAction(Request $request)
+    {
+        $models = json_decode($request->get('models'));
+
+        $supplier = new Supplier();
+        $supplier->setName($models[0]->name);
+        $supplier->setAddress($models[0]->address);
+        $supplier->setDescription($models[0]->description);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($supplier);
+        $em->flush();
+
+        $models[0]->id = $supplier->getId();
+
+        $response = new Response(json_encode($models[0]));
+
+        return $response;
+    }
+
+    public function dropdownsAction()
+    {
+        $repositoryProducts = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Product');
+        $queryProducts = $repositoryProducts->createQueryBuilder('p')
+                ->select('p.id, p.name, p.unit')
+                ->getQuery();
+        $products = $queryProducts->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        array_unshift($products, array('id' => 0, 'name' => '', 'unit' => ''));
+
+        $repositorySuppliers = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Supplier');
+        $querySuppliers = $repositorySuppliers->createQueryBuilder('s')
+                ->select('s.id, s.name')
+                ->getQuery();
+        $suppliers = $querySuppliers->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        array_unshift($suppliers, array('id' => 0, 'name' => ''));
+
+        $queryUnits = $repositoryProducts->createQueryBuilder('p')
+                ->select('p.id, p.unit')
+                ->groupBy('p.unit')
+                ->getQuery();
+        $units = $queryUnits->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
+//        foreach ($units as $key => $value) {
+//            $units[$key] = $value['unit'];
+//        }
+        array_unshift($units, array('id' => 0, 'unit' => ''));
+
+        $response = new Response(json_encode(
+                                array('products' => $products,
+                                    'suppliers' => $suppliers,
+                                    'units' => $units)));
+
+        return $response;
+    }
+
 }
