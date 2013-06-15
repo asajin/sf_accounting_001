@@ -10,142 +10,21 @@
     </ul>
     <div id="clientsDb">
 
-      {% block form %}{% endblock %}
+    {% block form %}{% endblock %}
 
-        <div id="grid" style="height: 500px">
-            <table id="grid">
-                <thead>
-                    <tr>
-                        <th data-field="price_date">Buy Date</th>
-                        <th data-field="supplier_name">
-                            Supplier<br />
-                            <input id="supplier_filter" class="k-input k-textbox" data-bind="value: supplier_name" style="width: 100%" />
-                        </th>
-                        <th data-field="product_name">
-                            Product Name<br />
-                            <input class="k-input k-textbox" data-bind="value: product_name" style="width: 100%" />
-                        </th>
-                        <th data-field="stock">stock</th>
-                        <th data-field="currency_price">currency price</th>
-                        <th data-field="local_price">local</th>
-                        <th data-field="amount">amount</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+    {% block grid %}
+        <div id="grid" style="height: 500px"></div>
+    {% endblock %}
 
     </div>
     {% block window_container %}{% endblock %}
 {% endblock %}
-    
-    
-{% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
-<script>
-$(document).ready(function() {
 
-    
-$("#grid").kendoGrid({
-    dataSource: {
-        type: "json",
-        transport : { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" },
-        schema: {
-            model: {
-                fields: {
-                    price_date: { type: "date" },
-                    supplier_name: { type: "string" },
-                    product_name: { type: "string" },
-                    unit: { type: "string" },
-                    stock: { type: "string" },
-                    currency_price: { type: "number" },
-                    local_price: { type: "number" },
-                    amount: { type: "number" },
-                    currency_rate: { type: "number" }
-                }
-            },
-            parse:function (data) {
-                $.each(data, function (idx, elem) {
-                    elem.price_date = new Date(elem.price_date);
-                });
-                return data;
-            }
-        },
-        pageSize: 10,
-        group: { field: "price_date", aggregates: [{ field: "amount", aggregate: "sum"}] },
-        aggregate: [{field: "amount", aggregate: "sum"}]
-    },
-    height: 500,
-    scrollable: true,
-    sortable: true,
-    filterable: {
-        extra: false,
-        operators: {
-            string: {
-                contains: "Contains"
-            }
-        }
-    },
-    pageable: {
-        pageSizes: true,
-        refresh: true
-    },
-    columns: [
-        {
-            hidden: true,
-            field: "price_date",
-            title: "Buy Date",
-            width: 60,
-            groupHeaderTemplate: 'Buy Date : #= kendo.toString(value,"<u>ddd</u> - dd MMMM yyyy") #'
-        },
-        {
-            field: "supplier_name",
-            title: "Supplier Name",
-            width: 80
-        },
-        {
-            field: "product_name",
-            title: "Product Name",
-            width: 80
-        },
-        {
-            field: "stock",
-            title: "Stock (units)",
-            width: 50,
-            template: '#= stock # #= unit #'
-        },
-        {
-            field: "local_price",
-            title: "Price<br>Lei",
-            width: 50,
-            template: ' <small style="color:gray">'
-                        +'<font title="Price Currency">#= currency_price #</font> * '
-                        +'<font title="Currency Rate">#= currency_rate #</font>'
-                      +'</small><br/>'
-                +' #= local_price #'
-        },
-        {
-            field: "amount",
-            title: "<b>Amount</b>",
-            width: 50,
-            template: '#= kendo.toString(amount, "n")#',
-            groupHeaderTemplate: 'total: #= sum #',
-            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
-            footerTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>'
-        },
-        {
-            hidden: true,
-            field: "currency_price",
-            title: "Price<br>Currency",
-            width: 50
-        },
-        {
-            hidden: true,
-            field: "currency_rate",
-            title: "Change Rate<br>(Currency/Lei)",
-            width: 50
-        }
-    ]
-});
-});
+{% block javascripts_embedded %}
+<script>
+var spIndexUrlObj = { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" }
 </script>
+<script src="{{ asset('bundles/accounting/js/sp.schema.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.columns.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.index.js') }}"></script>
 {% endblock %}

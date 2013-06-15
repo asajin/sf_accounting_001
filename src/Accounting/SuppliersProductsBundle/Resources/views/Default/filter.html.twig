@@ -35,6 +35,30 @@
 
       </form><br />
 {% endblock %}
+      
+{% block grid %}
+  <div id="" style="height: 500px">
+      <table id="grid">
+          <thead>
+              <tr>
+                  <th data-field="price_date">Buy Date</th>
+                  <th data-field="supplier_name">
+                      Supplier<br />
+                      <input id="supplier_filter" class="k-input k-textbox" data-bind="value: supplier_name" style="width: 100%" />
+                  </th>
+                  <th data-field="product_name">
+                      Product Name<br />
+                      <input class="k-input k-textbox" data-bind="value: product_name" style="width: 100%" />
+                  </th>
+                  <th data-field="stock">stock</th>
+                  <th data-field="currency_price">currency price</th>
+                  <th data-field="local_price">local</th>
+                  <th data-field="amount">amount</th>
+              </tr>
+          </thead>
+      </table>
+  </div>
+{% endblock %}
 
 {% block javascripts_embedded %}
         <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
