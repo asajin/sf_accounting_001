@@ -1,6 +1,13 @@
 {# src/Accounting/PriceListBundle/Resources/views/Page/index.html.twig #}
 {% extends 'AccountingPriceListBundle::layout.html.twig' %}
 
+{% block javascripts_embedded %}
+<script>
+var pricesUrlObj = {read: "{{ path('AccountingPriceListBundle_list') }}"};
+</script>
+<script src="{{ asset('bundles/accounting/js/prices.main.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     <h2>Price List</h2>
     <div id="clientsDb">
@@ -8,56 +15,4 @@
         <div id="grid" style="height: 350px"></div>
 
     </div>
-{% endblock %}
-    
-    
-{% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/price_list.js') }}"></script>
-<script>
-$(document).ready(function() {
-$("#grid").kendoGrid({
-    dataSource: {
-        data: createPriceList(50),
-        pageSize: 10
-    },
-    height: 350,
-    scrollable: true,
-    sortable: true,
-    filterable: true,
-    pageable: {
-        pageSizes: true,
-        refresh: true
-        //input: true
-        //numeric: false
-    },
-    columns: [
-        {
-            field: "code",
-            title: "Code",
-            width: 30
-        },
-        {
-            field: "name",
-            title: "Name",
-            width: 100
-        },
-        {
-            field: "units",
-            title: "Units",
-            width: 15
-        },
-        {
-            field: "stock",
-            title: "Stock",
-            width: 20
-        },
-        {
-            field: "price",
-            title: "Price",
-            width: 30
-        }
-    ]
-});
-});
-</script>
 {% endblock %}
