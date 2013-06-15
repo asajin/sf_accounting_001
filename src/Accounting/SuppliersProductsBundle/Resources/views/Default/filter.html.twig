@@ -2,7 +2,7 @@
 {% extends 'AccountingSuppliersProductsBundle::Default/index.html.twig' %}
 
 {% block form %}
-      <form action="{{ path('AccountingSupplierPrestationsBundle_filter') }}" >
+      <form action="{{ path('AccountingSuppliersProductsBundle_filter') }}" >
         
         <div id="tabstrip">
           <ul>
@@ -40,6 +40,17 @@
         <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
 <script>
 $(document).ready(function() {
+    
+$("#supplier_filter").change(function(){
+    console.log("asdf asd -- " + $(this).val());
+    
+var value = $(this).val()
+                            if (value) {
+                                $("#grid").data("kendoGrid").dataSource.filter({ field: "supplier_name", operator: "contains", value: value });
+                            } else {
+                                $("#grid").data("kendoGrid").dataSource.filter({});
+                            }
+});
  // create DatePicker from input HTML element
  
     $("#tabstrip").kendoTabStrip({
@@ -95,11 +106,13 @@ $("#monthpicker").kendoDatePicker({
                 
 $("#grid").kendoGrid({
     dataSource: {
-        data: createDeliveries(30),
+        serverFiltering: true,
+        type: "json",
+        transport : { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" },
         schema: {
             model: {
                 fields: {
-                    bye_date: { type: "date" },
+                    price_date: { type: "date" },
                     supplier_name: { type: "string" },
                     product_name: { type: "string" },
                     unit: { type: "string" },
@@ -109,6 +122,12 @@ $("#grid").kendoGrid({
                     amount: { type: "number" },
                     currency_rate: { type: "number" }
                 }
+            },
+            parse:function (data) {
+                $.each(data, function (idx, elem) {
+                    elem.price_date = new Date(elem.price_date);
+                });
+                return data;
             }
         },
         pageSize: 10,
@@ -116,7 +135,7 @@ $("#grid").kendoGrid({
     },
     height: 500,
     scrollable: true,
-    sortable: true,
+    sortable: false,
     filterable: true,
     columnMenu: true,
     pageable: {
@@ -125,9 +144,9 @@ $("#grid").kendoGrid({
     },
     columns: [
         {
-            field: "bye_date",
-            title: "Bye Date",
-            template: '#= kendo.toString(bye_date,"dd MMMM yyyy") #'
+            field: "price_date",
+            title: "Buy Date",
+            template: '#= kendo.toString(price_date,"dd MMMM yyyy") #'
         },
         {
             field: "supplier_name",

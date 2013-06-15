@@ -2,19 +2,40 @@
 {% extends 'AccountingSuppliersProductsBundle::layout.html.twig' %}
 
 {% block body %}
-    <h2>Deliveries</h2>
+    <h2>Supplier Products</h2>
     <ul id="menu">
-        <li><a href="{{ path('AccountingSupplierPrestationsBundle_index') }}">All</a></li>
-        <li><a href="{{ path('AccountingSupplierPrestationsBundle_filter') }}">Filter by week/month</a></li>
-        <li><a href="{{ path('AccountingSupplierPrestationsBundle_new') }}">Add entry</a></li>
+        <li><a href="{{ path('AccountingSuppliersProductsBundle_index') }}">All</a></li>
+        <li><a href="{{ path('AccountingSuppliersProductsBundle_filter') }}">Filter by week/month</a></li>
+        <li><a href="{{ path('AccountingSuppliersProductsBundle_new') }}">Add entry</a></li>
     </ul>
     <div id="clientsDb">
 
       {% block form %}{% endblock %}
 
-        <div id="grid" style="height: 500px"></div>
+        <div id="grid" style="height: 500px">
+            <table id="grid">
+                <thead>
+                    <tr>
+                        <th data-field="price_date">Buy Date</th>
+                        <th data-field="supplier_name">
+                            Supplier<br />
+                            <input id="supplier_filter" class="k-input k-textbox" data-bind="value: supplier_name" style="width: 100%" />
+                        </th>
+                        <th data-field="product_name">
+                            Product Name<br />
+                            <input class="k-input k-textbox" data-bind="value: product_name" style="width: 100%" />
+                        </th>
+                        <th data-field="stock">stock</th>
+                        <th data-field="currency_price">currency price</th>
+                        <th data-field="local_price">local</th>
+                        <th data-field="amount">amount</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
 
     </div>
+    {% block window_container %}{% endblock %}
 {% endblock %}
     
     
@@ -22,13 +43,16 @@
         <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
 <script>
 $(document).ready(function() {
+
+    
 $("#grid").kendoGrid({
     dataSource: {
-        data: createDeliveries(10),
+        type: "json",
+        transport : { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" },
         schema: {
             model: {
                 fields: {
-                    bye_date: { type: "date" },
+                    price_date: { type: "date" },
                     supplier_name: { type: "string" },
                     product_name: { type: "string" },
                     unit: { type: "string" },
@@ -38,16 +62,29 @@ $("#grid").kendoGrid({
                     amount: { type: "number" },
                     currency_rate: { type: "number" }
                 }
+            },
+            parse:function (data) {
+                $.each(data, function (idx, elem) {
+                    elem.price_date = new Date(elem.price_date);
+                });
+                return data;
             }
         },
         pageSize: 10,
-        group: { field: "bye_date", aggregates: [{ field: "amount", aggregate: "sum"}] },
+        group: { field: "price_date", aggregates: [{ field: "amount", aggregate: "sum"}] },
         aggregate: [{field: "amount", aggregate: "sum"}]
     },
     height: 500,
     scrollable: true,
     sortable: true,
-    filterable: true,
+    filterable: {
+        extra: false,
+        operators: {
+            string: {
+                contains: "Contains"
+            }
+        }
+    },
     pageable: {
         pageSizes: true,
         refresh: true
@@ -55,10 +92,10 @@ $("#grid").kendoGrid({
     columns: [
         {
             hidden: true,
-            field: "bye_date",
-            title: "Bye Date",
+            field: "price_date",
+            title: "Buy Date",
             width: 60,
-            groupHeaderTemplate: 'Bye Date : #= kendo.toString(value,"<u>ddd</u> - dd MMMM yyyy") #'
+            groupHeaderTemplate: 'Buy Date : #= kendo.toString(value,"<u>ddd</u> - dd MMMM yyyy") #'
         },
         {
             field: "supplier_name",
@@ -90,6 +127,7 @@ $("#grid").kendoGrid({
             field: "amount",
             title: "<b>Amount</b>",
             width: 50,
+            template: '#= kendo.toString(amount, "n")#',
             groupHeaderTemplate: 'total: #= sum #',
             groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
             footerTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>'
