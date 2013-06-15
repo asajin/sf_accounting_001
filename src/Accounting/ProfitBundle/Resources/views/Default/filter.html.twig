@@ -1,0 +1,39 @@
+{# src/Accounting/AccountingProfitBundle/Resources/views/Default/index.html.twig #}
+{% extends 'AccountingProfitBundle::Default/index.html.twig' %}
+
+{% block form %}
+      <form action="{{ path('AccountingProductsBundle_filter') }}" >
+        
+        <div id="tabstrip">
+          <ul>
+            <li class="k-state-active">
+              Month filter
+            </li>
+          <div>
+            <div class="weather">
+              <input id="monthpicker" value="November 2011" style="width:150px" />
+              
+              <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+            </div>
+          </div>
+        </div>
+
+      </form><br />
+{% endblock %}
+
+{% block javascripts_addons %}
+<script>
+$(document).ready(function() {
+    $("#monthpicker").kendoDatePicker({
+        // defines the start view
+        start: "year",
+
+        // defines when the calendar should return date
+        depth: "year",
+
+        // display month and year in the input
+        format: "MMMM yyyy"
+    });
+});
+</script>
+{% endblock %}

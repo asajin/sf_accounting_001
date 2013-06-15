@@ -1,0 +1,12 @@
+# src/Accounting/ProfitBundle/Resources/config/routing.yml
+AccountingProfitBundle_index:
+    pattern:  /profit
+    defaults: { _controller: AccountingProfitBundle:Default:index }
+    requirements:
+        _method:  GET
+
+AccountingProfitBundle_filter:
+    pattern:  /profit/filter
+    defaults: { _controller: AccountingProfitBundle:Default:filter }
+    requirements:
+        _method:  GET

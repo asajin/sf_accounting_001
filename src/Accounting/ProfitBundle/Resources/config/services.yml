@@ -1,0 +1,7 @@
+parameters:
+#    accounting_profit.example.class: Accounting\ProfitBundle\Example
+
+services:
+#    accounting_profit.example:
+#        class: %accounting_profit.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
