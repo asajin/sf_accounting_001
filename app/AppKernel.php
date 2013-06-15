@@ -27,7 +27,7 @@ class AppKernel extends Kernel
             new Accounting\SaleOffersBundle\AccountingSaleOffersBundle(),
             new Accounting\ProfitBundle\AccountingProfitBundle(),
             new Accounting\OffersBundle\AccountingOffersBundle(),
-            new Accounting\SupplierPrestationsBundle\AccountingSupplierPrestationsBundle(),
+            new Accounting\SuppliersProductsBundle\AccountingSuppliersProductsBundle(),
             new Accounting\ChargesBundle\AccountingChargesBundle(),
         );
 

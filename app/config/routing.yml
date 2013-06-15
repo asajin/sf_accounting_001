@@ -3,7 +3,7 @@ accounting_charges:
     prefix:   /
 
 accounting_supplier_prestations:
-    resource: "@AccountingSupplierPrestationsBundle/Resources/config/routing.yml"
+    resource: "@AccountingSuppliersProductsBundle/Resources/config/routing.yml"
     prefix:   /
 
 accounting_offers:
