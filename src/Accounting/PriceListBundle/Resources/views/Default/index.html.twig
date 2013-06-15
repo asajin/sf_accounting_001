@@ -12,12 +12,24 @@
     
     
 {% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/price_list.js') }}"></script>
 <script>
 $(document).ready(function() {
 $("#grid").kendoGrid({
     dataSource: {
-        data: createPriceList(50),
+        type: "json",
+        transport : { read: "{{ path('AccountingPriceListBundle_list') }}" },
+        schema: {
+            model: {
+                fields: {
+                    id: { type: "number" },
+                    code: { type: "string" },
+                    name: { type: "string" },
+                    unit: { type: "string" },
+                    last_stock: { type: "number" },
+                    last_price: { type: "number" }
+                }
+            }
+        },
         pageSize: 10
     },
     height: 350,
@@ -42,17 +54,17 @@ $("#grid").kendoGrid({
             width: 100
         },
         {
-            field: "units",
+            field: "unit",
             title: "Units",
             width: 15
         },
         {
-            field: "stock",
+            field: "last_stock",
             title: "Stock",
             width: 20
         },
         {
-            field: "price",
+            field: "last_price",
             title: "Price",
             width: 30
         }
