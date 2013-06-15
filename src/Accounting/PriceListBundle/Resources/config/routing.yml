@@ -4,3 +4,10 @@ AccountingPriceListBundle_index:
     defaults: { _controller: AccountingPriceListBundle:Default:index }
     requirements:
         _method:  GET
+
+AccountingPriceListBundle_list:
+    pattern:  /service/pl/list.{_format}
+    defaults: { _controller: AccountingPriceListBundle:Default:list, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON
