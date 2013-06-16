@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Common\DataBundle\Entity\Product;
 use Common\DataBundle\Entity\Supplier;
 use Common\DataBundle\Entity\Unit;
+use Common\DataBundle\Entity\TimePrice;
 
 class DefaultController extends Controller
 {
@@ -75,7 +76,34 @@ class DefaultController extends Controller
     public function createAction(Request $request)
     {
         $models = json_decode($request->get('models'));
-        $models[0]->id = 3;
+
+        $sp = new TimePrice();
+
+        $product = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Product')
+                ->find($models[0]->product->id);
+        $sp->setProduct($product);
+
+        $supplier = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Supplier')
+                ->find($models[0]->supplier->id);
+        $sp->setSupplier($supplier);
+
+        $sp->setCurrencyPrice($models[0]->currency_price);
+        $sp->setLocalPrice($models[0]->local_price);
+        $sp->setCurrencyRate($models[0]->currency_rate);
+        $sp->setPriceDate(new \DateTime($models[0]->price_date));
+        $sp->setStock($models[0]->stock);
+        $sp->setUpdatedAt(new \DateTime('now'));
+        if (empty($models[0]->id)) {
+            $sp->setCreatedAt(new \DateTime('now'));
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($sp);
+        $em->flush();
+
+        $models[0]->id = $sp->getId();
 
         $response = new Response(json_encode($models[0]));
 

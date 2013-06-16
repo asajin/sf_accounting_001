@@ -1,7 +1,8 @@
 var newTransportObj = {
     read:  {
         url: newUrlObj.read,
-        dataType: "json"
+        dataType: "json",
+        cache: false
     },
     update: {
         url: newUrlObj.create,
