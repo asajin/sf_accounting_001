@@ -59,6 +59,13 @@ AccountingSuppliersProductsBundle_createSupplier:
         _method:  PUT
         _format: JSON
 
+AccountingSuppliersProductsBundle_createUnit:
+    pattern:  /service/sp/unit/create.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:createUnit, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
 AccountingSuppliersProductsBundle_dropdowns:
     pattern:  /service/sp/dropdowns.{_format}
     defaults: { _controller: AccountingSuppliersProductsBundle:Default:dropdowns, _format: json, _locale: en }

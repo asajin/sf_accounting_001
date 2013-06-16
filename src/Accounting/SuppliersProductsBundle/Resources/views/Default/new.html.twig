@@ -10,10 +10,12 @@ destroy: "{{ path('AccountingSuppliersProductsBundle_delete') }}",
 load: "{{ path('AccountingSuppliersProductsBundle_dropdowns') }}",
 createProduct: "{{ path('AccountingSuppliersProductsBundle_createProduct') }}",
 createSupplier: "{{ path('AccountingSuppliersProductsBundle_createSupplier') }}",
+createUnit: "{{ path('AccountingSuppliersProductsBundle_createUnit') }}",
 }
 </script>
 <script src="{{ asset('bundles/accounting/js/sp.supplier.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/sp.product.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.unit.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/sp.main.js') }}"></script>
 {% endblock %}
 
@@ -21,5 +23,6 @@ createSupplier: "{{ path('AccountingSuppliersProductsBundle_createSupplier') }}"
 
 {% include 'AccountingSuppliersProductsBundle::Default/product.html.twig' %}
 {% include 'AccountingSuppliersProductsBundle::Default/supplier.html.twig' %}
+{% include 'AccountingSuppliersProductsBundle::Default/unit.html.twig' %}
 
 {% endblock %}

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Common\DataBundle\Entity\Product;
 use Common\DataBundle\Entity\Supplier;
+use Common\DataBundle\Entity\Unit;
 
 class DefaultController extends Controller
 {
@@ -35,13 +36,14 @@ class DefaultController extends Controller
                 ->addSelect('tp.currency_price as currency_price')
                 ->addSelect('tp.currency_rate as currency_rate')
                 ->addSelect('tp.price_date as price_date')
-                ->addSelect('p.unit as unit')
+                ->addSelect('u.name as unit')
                 ->addSelect('tp.stock as stock')
                 ->addSelect('p.name as product_name')
                 ->addSelect('s.name as supplier_name')
                 ->addSelect('(tp.local_price * tp.stock) as amount')
                 ->leftJoin('tp.product', 'p')
                 ->leftJoin('tp.supplier', 's')
+                ->leftJoin('p.unit', 'u')
                 ->getQuery();
 
         $timePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
@@ -57,9 +59,10 @@ class DefaultController extends Controller
                 ->getRepository('CommonDataBundle:TimePrice');
 
         $query = $repository->createQueryBuilder('tp')
-                ->select('tp, p, s')
+                ->select('tp, p, s, u')
                 ->leftJoin('tp.product', 'p')
                 ->leftJoin('tp.supplier', 's')
+                ->leftJoin('p.unit', 'u')
                 ->getQuery();
 
         $timePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -134,15 +137,31 @@ class DefaultController extends Controller
         return $response;
     }
 
+    public function createUnitAction(Request $request)
+    {
+        $models = json_decode($request->get('models'));
+
+        $unit = new Unit();
+        $unit->setName($models[0]->name);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($unit);
+        $em->flush();
+
+        $response = new Response(json_encode($models[0]));
+
+        return $response;
+    }
+
     public function dropdownsAction()
     {
         $repositoryProducts = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:Product');
         $queryProducts = $repositoryProducts->createQueryBuilder('p')
-                ->select('p.id, p.name, p.unit')
+                ->select('p.id, p.name')
                 ->getQuery();
         $products = $queryProducts->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        array_unshift($products, array('id' => 0, 'name' => '', 'unit' => ''));
+        array_unshift($products, array('id' => 0, 'name' => ''));
 
         $repositorySuppliers = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:Supplier');
@@ -152,15 +171,13 @@ class DefaultController extends Controller
         $suppliers = $querySuppliers->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         array_unshift($suppliers, array('id' => 0, 'name' => ''));
 
-        $queryUnits = $repositoryProducts->createQueryBuilder('p')
-                ->select('p.id, p.unit')
-                ->groupBy('p.unit')
+        $repositoryUnits = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Unit');
+        $queryUnits = $repositoryUnits->createQueryBuilder('u')
+                ->select('u.id, u.name')
                 ->getQuery();
-        $units = $queryUnits->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
-//        foreach ($units as $key => $value) {
-//            $units[$key] = $value['unit'];
-//        }
-        array_unshift($units, array('id' => 0, 'unit' => ''));
+        $units = $queryUnits->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        array_unshift($units, array('id' => 0, 'name' => ''));
 
         $response = new Response(json_encode(
                                 array('products' => $products,
