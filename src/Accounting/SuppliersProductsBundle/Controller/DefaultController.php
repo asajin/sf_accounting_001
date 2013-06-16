@@ -52,6 +52,7 @@ class DefaultController extends Controller
                     case 'currency_price':
                         break;
                     case 'price_date':
+                        $this->filterPriceDate($query, $value);
                         break;
                     case 'unit':
                         break;
@@ -70,6 +71,19 @@ class DefaultController extends Controller
                     default:
                         break;
                 }
+                
+                if(isset($value['filters'])) {
+                    $logic = $value['logic'];
+                    foreach ($value['filters'] as $filterValue) {
+                        switch ($filterValue['field']) {
+                            case 'price_date':
+                                $this->filterPriceDate($query, $filterValue);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
         }
 
@@ -78,6 +92,28 @@ class DefaultController extends Controller
         $response = new Response(json_encode($timePrices));
 
         return $response;
+    }
+    
+    private function filterPriceDate(&$query, $field)
+    {
+        $value = trim(str_replace(array('(GTB Standard Time)', '(GTB Daylight Time)'), '', $field['value']));
+        
+        switch ($field['operator']) {
+            case 'gte':
+                $query->andWhere('tp.price_date >= :time_price_gte')
+                    ->setParameter('time_price_gte', new \DateTime($value));
+                break;
+            case 'eq':
+                $query->andWhere('tp.price_date = :time_price_eq')
+                    ->setParameter('time_price_eq', new \DateTime($value));
+                break;
+            case 'lte':
+                $query->andWhere('tp.price_date <= :time_price_lte')
+                    ->setParameter('time_price_lte', new \DateTime($value));
+                break;
+            default:
+                break;
+        }
     }
 
     public function newAction()

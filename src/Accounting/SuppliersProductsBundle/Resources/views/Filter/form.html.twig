@@ -1,5 +1,5 @@
 {# src/Accounting/SuppliersProductsBundle/Resources/views/Filter/form.html.twig #}
-<form action="{{ path('AccountingSuppliersProductsBundle_filter') }}" >
+<form action="#" >
 
     <div id="tabstrip">
         <ul>
@@ -11,21 +11,21 @@
             </li>
         </ul>
         <div>
-            <div class="weather">
-                <input id="monthpicker" value="November 2011" style="width:150px" />
+            <div class="form-picker">
+                <input id="monthpicker" value="" style="width:150px" />
 
-                <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+                <button class="k-button" id="month_search">Search</button>
             </div>
         </div>
         <div>
-            <div class="weather">
+            <div class="form-picker">
                 <label for="start">Start date:</label>
-                <input id="start" value="10/10/2011" />
+                <input id="start" value="" />
 
                 <label for="end" style="margin-left:3em">End date:</label>
-                <input id="end" value="10/10/2012"/>
+                <input id="end" value=""/>
 
-                <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+                <button class="k-button" id="range_search">Search</button>
             </div>
         </div>
     </div>

@@ -28,6 +28,25 @@ function spFieldFilterContains(field) {
     }
 }
 
+function spPriceDateFilterRange(priceDateStartValue, priceDateEndValue) {
+    var fieldFilter = {
+        logic: 'and',
+        filters: [
+        {
+            field: 'price_date',
+            operator: "gte",
+            value: priceDateStartValue
+        },
+        {
+            field: 'price_date',
+            operator: "lte",
+            value: priceDateEndValue
+        }
+        ]
+    };
+    $("#grid").data("kendoGrid").dataSource.filter(fieldFilter);
+}
+
 $(document).ready(function() {
 
     $("#supplier_filter").change(function(){
@@ -66,12 +85,15 @@ $(document).ready(function() {
         }
     }
 
+    var today = new Date();
     // create DatePicker from input HTML element
     var start = $("#start").kendoDatePicker({
+        value: today,
         change: startChange
     }).data("kendoDatePicker");
 
     var end = $("#end").kendoDatePicker({
+        value: today,
         change: endChange
     }).data("kendoDatePicker");
 
@@ -79,6 +101,7 @@ $(document).ready(function() {
     end.min(start.value());
 
     $("#monthpicker").kendoDatePicker({
+        value: today,
         // defines the start view
         start: "year",
 
@@ -87,6 +110,28 @@ $(document).ready(function() {
 
         // display month and year in the input
         format: "MMMM yyyy"
+    });
+
+    $('#month_search').click(function(){
+
+        console.log($("#monthpicker").data("kendoDatePicker").value());
+
+        var priceDateValue = $("#monthpicker").data("kendoDatePicker").value();
+        var monthDate = new Date(priceDateValue);
+        var nextMonthDate = new Date(priceDateValue);
+        nextMonthDate.setMonth(monthDate.getMonth() + 1);
+
+        spPriceDateFilterRange(priceDateValue, nextMonthDate);
+    });
+
+    $('#range_search').click(function(){
+
+        console.log($("#start").data("kendoDatePicker").value());
+
+        var priceDateStartValue = $("#start").data("kendoDatePicker").value();
+        var priceDateEndValue = $("#end").data("kendoDatePicker").value();
+
+        spPriceDateFilterRange(priceDateStartValue, priceDateEndValue);
     });
 
     $("#grid").kendoGrid({
