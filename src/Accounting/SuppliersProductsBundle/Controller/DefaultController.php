@@ -64,6 +64,7 @@ class DefaultController extends Controller
                 ->leftJoin('tp.product', 'p')
                 ->leftJoin('tp.supplier', 's')
                 ->leftJoin('p.unit', 'u')
+                ->orderBy('tp.price_date', 'DESC')
                 ->getQuery();
 
         $timePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -113,8 +114,14 @@ class DefaultController extends Controller
     public function deleteAction(Request $request)
     {
         $models = json_decode($request->get('models'));
-        $models[0]->id = 3;
-//        $models[0]->product->unit = $models[0]->unit;
+
+        $sp = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:TimePrice')
+                ->find($models[0]->id);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($sp);
+        $em->flush();
 
         $response = new Response(json_encode($models[0]));
 
