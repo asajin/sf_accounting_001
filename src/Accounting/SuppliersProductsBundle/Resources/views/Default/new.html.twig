@@ -1,130 +1,28 @@
 {# src/Accounting/SuppliersProductsBundle/Resources/views/Default/index.html.twig #}
 {% extends 'AccountingSuppliersProductsBundle::Default/index.html.twig' %}
 
-
 {% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
 <script>
-$(document).ready(function() {
-$("#grid").kendoGrid({
-    dataSource: {
-        data: createDeliveries(30),
-        schema: {
-            model: {
-                fields: {
-                    bye_date: { type: "date" },
-                    supplier_name: { defaultValue: { Id: 1, Title: "Supplier"} },
-                    product_name: { defaultValue: { Id: 1, Title: "Product"} },
-                    unit: { type: "string" },
-                    stock: { type: "string" },
-                    currency_price: { type: "number" },
-                    local_price: { type: "number" },
-                    amount: { type: "number" },
-                    currency_rate: { type: "number" }
-                }
-            }
-        },
-        pageSize: 10,
-        aggregate: [{field: "amount", aggregate: "sum"}]
-    },
-    height: 500,
-    scrollable: true,
-    sortable: true,
-    filterable: true,
-    pageable: {
-        pageSizes: true,
-        refresh: true
-    },
-    toolbar: ["create"],
-    editable: "popup",
-    columns: [
-        {
-            hidden : true,
-            field: "bye_date",
-            title: "Bye Date",
-            width: 60
-        },
-        {
-            field: "supplier_name",
-            title: "Supplier Name",
-            width: 80,
-            editor: suppliersDropDownEditor,
-            template: '#= supplier_name.Title #'
-        },
-        {
-            field: "product_name",
-            title: "Product Name",
-            width: 80,
-            editor: productsDropDownEditor,
-            template: '#= product_name.Title #'
-        },
-        {
-            field: "unit",
-            title: "Units",
-            width: 20,
-            editor: unitsDropDownEditor,
-            template: '#= unit #'
-        },
-        {
-            field: "stock",
-            title: "Stock",
-            width: 30,
-            template: '#= stock #'
-        },
-        {
-            field: "currency_price",
-            title: "Price<br>Currency",
-            width: 50
-        },
-        {
-            field: "local_price",
-            title: "Price<br>Lei",
-            width: 50
-        },
-        {
-            field: "amount",
-            title: "Amount",
-            width: 50,
-            groupFooterTemplate: 'total: <i>#= Math.round(sum*100)/100#</i>',
-            footerTemplate: 'total: <b>#= Math.round(sum*100)/100#</b>'
-        },
-        {
-            field: "currency_rate",
-            title: "Change Rate<br>(Currency/Lei)",
-            width: 50
-        }
-    ]
-});
-var items = [ { Id: 0, Title: "Manager" }, { Id: 1, Title: "Developer" }, { Id: 2, Title: "Vice President" } ];
-                function suppliersDropDownEditor(container, options) {
-                    $('<input required data-text-field="Title" data-value-field="Id" data-bind="value:' + options.field + '"/>')
-                        .appendTo(container)
-                        .kendoDropDownList({
-                            autoBind: false,
-                            dataSource: items
-                        });
-                }
-                
-var items2 = [ { Id: 0, Title: "Banan" }, { Id: 1, Title: "Ornage" }, { Id: 2, Title: "Apples" } ];
-                function productsDropDownEditor(container, options) {
-                    $('<input required data-text-field="Title" data-value-field="Id" data-bind="value:' + options.field + '"/>')
-                        .appendTo(container)
-                        .kendoDropDownList({
-                            autoBind: false,
-                            dataSource: items2
-                        });
-                }
-                
-//var items2 = [ { Id: 0, Title: "m" }, { Id: 1, Title: "mg" }, { Id: 2, Title: "l" } ];
-var items3 = [ "m", "mg", "l" ];
-                function unitsDropDownEditor(container, options) {
-                    $('<input type="text" data-bind="value:' + options.field + '"/>')
-                        .appendTo(container)
-                        .kendoDropDownList({
-                            autoBind: false,
-                            dataSource: items3
-                        });
-                }
-});
+var newUrlObj = {
+read: "{{ path('AccountingSuppliersProductsBundle_listFull') }}",
+create: "{{ path('AccountingSuppliersProductsBundle_create') }}",
+destroy: "{{ path('AccountingSuppliersProductsBundle_delete') }}",
+load: "{{ path('AccountingSuppliersProductsBundle_dropdowns') }}",
+createProduct: "{{ path('AccountingSuppliersProductsBundle_createProduct') }}",
+createSupplier: "{{ path('AccountingSuppliersProductsBundle_createSupplier') }}",
+createUnit: "{{ path('AccountingSuppliersProductsBundle_createUnit') }}",
+}
 </script>
+<script src="{{ asset('bundles/accounting/js/sp.supplier.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.product.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.unit.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.new.js') }}"></script>
+{% endblock %}
+
+{% block window_container %}
+
+{% include 'AccountingSuppliersProductsBundle::Default/product.html.twig' %}
+{% include 'AccountingSuppliersProductsBundle::Default/supplier.html.twig' %}
+{% include 'AccountingSuppliersProductsBundle::Default/unit.html.twig' %}
+
 {% endblock %}

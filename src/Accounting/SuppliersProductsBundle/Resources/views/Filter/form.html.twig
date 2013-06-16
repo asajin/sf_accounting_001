@@ -1,0 +1,33 @@
+{# src/Accounting/SuppliersProductsBundle/Resources/views/Filter/form.html.twig #}
+<form action="#" >
+
+    <div id="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Month filter
+            </li>
+            <li>
+                Range filter
+            </li>
+        </ul>
+        <div>
+            <div class="form-picker">
+                <input id="monthpicker" value="" style="width:150px" />
+
+                <button class="k-button" id="month_search">Search</button>
+            </div>
+        </div>
+        <div>
+            <div class="form-picker">
+                <label for="start">Start date:</label>
+                <input id="start" value="" />
+
+                <label for="end" style="margin-left:3em">End date:</label>
+                <input id="end" value=""/>
+
+                <button class="k-button" id="range_search">Search</button>
+            </div>
+        </div>
+    </div>
+
+</form>
