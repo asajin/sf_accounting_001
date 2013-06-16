@@ -37,7 +37,33 @@ $(document).ready(function() {
             pageSizes: true,
             refresh: true
         },
-        columns: spColumnsObj
+        columns: [
+
+        {
+            hidden: true,
+            field: "price_date",
+            title: "Buy Date",
+            width: 60,
+            groupHeaderTemplate: 'Buy Date : #= kendo.toString(value,"<u>ddd</u> - dd MMMM yyyy") #'
+        },
+        spColumnsObj.supplier_name,
+        spColumnsObj.product_name,
+        spColumnsObj.stock,
+        spColumnsObj.local_price,
+        spColumnsObj.amount,
+        {
+            hidden: true,
+            field: "currency_price",
+            title: "Price<br>Currency",
+            width: 50
+        },
+        {
+            hidden: true,
+            field: "currency_rate",
+            title: "Change Rate<br>(Currency/Lei)",
+            width: 50
+        }
+        ]
     });
 
 });

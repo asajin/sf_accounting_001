@@ -2,212 +2,36 @@
 {% extends 'AccountingSuppliersProductsBundle::Default/index.html.twig' %}
 
 {% block form %}
-      <form action="{{ path('AccountingSuppliersProductsBundle_filter') }}" >
-        
-        <div id="tabstrip">
-          <ul>
-            <li class="k-state-active">
-              Month filter
-            </li>
-            <li>
-              Range filter
-            </li>
-          </ul>
-          <div>
-            <div class="weather">
-              <input id="monthpicker" value="November 2011" style="width:150px" />
-              
-              <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
-            </div>
-          </div>
-          <div>
-            <div class="weather">
-              <label for="start">Start date:</label>
-              <input id="start" value="10/10/2011" />
-
-              <label for="end" style="margin-left:3em">End date:</label>
-              <input id="end" value="10/10/2012"/>
-              
-              <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
-            </div>
-          </div>
-        </div>
-
-      </form><br />
+{% include 'AccountingSuppliersProductsBundle::Filter/form.html.twig' %}<br />
 {% endblock %}
       
 {% block grid %}
-  <div id="" style="height: 500px">
-      <table id="grid">
-          <thead>
-              <tr>
-                  <th data-field="price_date">Buy Date</th>
-                  <th data-field="supplier_name">
-                      Supplier<br />
-                      <input id="supplier_filter" class="k-input k-textbox" data-bind="value: supplier_name" style="width: 100%" />
-                  </th>
-                  <th data-field="product_name">
-                      Product Name<br />
-                      <input class="k-input k-textbox" data-bind="value: product_name" style="width: 100%" />
-                  </th>
-                  <th data-field="stock">stock</th>
-                  <th data-field="currency_price">currency price</th>
-                  <th data-field="local_price">local</th>
-                  <th data-field="amount">amount</th>
-              </tr>
-          </thead>
-      </table>
-  </div>
+    <table id="grid" style="height: 500px">
+        <thead>
+            <tr>
+                <th data-field="price_date">Buy Date</th>
+                <th data-field="supplier_name">
+                    Supplier<br />
+                    <input id="supplier_filter" class="k-input k-textbox" data-bind="value: supplier_name" style="width: 100%" />
+                </th>
+                <th data-field="product_name">
+                    Product Name<br />
+                    <input class="k-input k-textbox" data-bind="value: product_name" style="width: 100%" />
+                </th>
+                <th data-field="stock">Stock (units)</th>
+                <th data-field="currency_price">Price<br>Currency</th>
+                <th data-field="local_price">Price<br>Lei</th>
+                <th data-field="amount"><b>Amount</b></th>
+            </tr>
+        </thead>
+    </table>
 {% endblock %}
 
 {% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/deliveries.js') }}"></script>
 <script>
-$(document).ready(function() {
-    
-$("#supplier_filter").change(function(){
-    console.log("asdf asd -- " + $(this).val());
-    
-var value = $(this).val()
-                            if (value) {
-                                $("#grid").data("kendoGrid").dataSource.filter({ field: "supplier_name", operator: "contains", value: value });
-                            } else {
-                                $("#grid").data("kendoGrid").dataSource.filter({});
-                            }
-});
- // create DatePicker from input HTML element
- 
-    $("#tabstrip").kendoTabStrip({
-       animation:	{
-           open: {
-               effects: "fadeIn"
-           }
-       }
-
-    });
- 
-    function startChange() {
-        var startDate = start.value();
-
-        if (startDate) {
-            startDate = new Date(startDate);
-            startDate.setDate(startDate.getDate() + 1);
-            end.min(startDate);
-        }
-    }
-
-    function endChange() {
-        var endDate = end.value();
-
-        if (endDate) {
-            endDate = new Date(endDate);
-            endDate.setDate(endDate.getDate() - 1);
-            start.max(endDate);
-        }
-    }
-
-    var start = $("#start").kendoDatePicker({
-        change: startChange
-    }).data("kendoDatePicker");
-
-    var end = $("#end").kendoDatePicker({
-        change: endChange
-    }).data("kendoDatePicker");
-
-    start.max(end.value());
-    end.min(start.value());
-
-$("#monthpicker").kendoDatePicker({
-    // defines the start view
-    start: "year",
-
-    // defines when the calendar should return date
-    depth: "year",
-
-    // display month and year in the input
-    format: "MMMM yyyy"
-});
-                
-$("#grid").kendoGrid({
-    dataSource: {
-        serverFiltering: true,
-        type: "json",
-        transport : { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" },
-        schema: {
-            model: {
-                fields: {
-                    price_date: { type: "date" },
-                    supplier_name: { type: "string" },
-                    product_name: { type: "string" },
-                    unit: { type: "string" },
-                    stock: { type: "string" },
-                    currency_price: { type: "number" },
-                    local_price: { type: "number" },
-                    amount: { type: "number" },
-                    currency_rate: { type: "number" }
-                }
-            },
-            parse:function (data) {
-                $.each(data, function (idx, elem) {
-                    elem.price_date = new Date(elem.price_date);
-                });
-                return data;
-            }
-        },
-        pageSize: 10,
-        aggregate: [{field: "amount", aggregate: "sum"}]
-    },
-    height: 500,
-    scrollable: true,
-    sortable: false,
-    filterable: true,
-    columnMenu: true,
-    pageable: {
-        pageSizes: true,
-        refresh: true
-    },
-    columns: [
-        {
-            field: "price_date",
-            title: "Buy Date",
-            template: '#= kendo.toString(price_date,"dd MMMM yyyy") #'
-        },
-        {
-            field: "supplier_name",
-            title: "Supplier Name"
-        },
-        {
-            field: "product_name",
-            title: "Product Name"
-        },
-        {
-            field: "stock",
-            title: "Stock (units)",
-            template: '#= stock # #= unit #'
-        },
-        {
-            field: "currency_price",
-            title: "Price<br>Currency",
-            template: ' #= currency_price # * '
-                        +'<font title="Currency Rate">#= currency_rate #</font>'
-        },
-        {
-            field: "local_price",
-            title: "Price<br>Lei"
-        },
-        {
-            field: "amount",
-            title: "Amount",
-            groupFooterTemplate: 'total: #= kendo.toString(sum, "n")#',
-            footerTemplate: 'total: #= kendo.toString(sum, "n")#'
-        },
-        {
-            hidden: true,
-            field: "currency_rate",
-            title: "Change Rate<br>(Currency/Lei)"
-        }
-    ]
-});
-});
+var spFilterUrlObj = { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" }
 </script>
+<script src="{{ asset('bundles/accounting/js/sp.schema.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.columns.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.filter.js') }}"></script>
 {% endblock %}

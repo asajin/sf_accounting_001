@@ -1,0 +1,33 @@
+{# src/Accounting/SuppliersProductsBundle/Resources/views/Filter/form.html.twig #}
+<form action="{{ path('AccountingSuppliersProductsBundle_filter') }}" >
+
+    <div id="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Month filter
+            </li>
+            <li>
+                Range filter
+            </li>
+        </ul>
+        <div>
+            <div class="weather">
+                <input id="monthpicker" value="November 2011" style="width:150px" />
+
+                <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+            </div>
+        </div>
+        <div>
+            <div class="weather">
+                <label for="start">Start date:</label>
+                <input id="start" value="10/10/2011" />
+
+                <label for="end" style="margin-left:3em">End date:</label>
+                <input id="end" value="10/10/2012"/>
+
+                <button class="k-button" id="get" onclick="$(this).find('form').submit()">Search</button>
+            </div>
+        </div>
+    </div>
+
+</form>
