@@ -67,9 +67,10 @@ class Product
     protected $last_add_date;
 
     /**
-     * @var string $unit
+     * @var Common\DataBundle\Entity\Unit $unit
      *
-     * @ORM\Column(name="unit", type="string", length=15)
+     * @ORM\ManyToOne(targetEntity="Unit", inversedBy="products")
+     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
      */
     protected $unit;
 
@@ -104,11 +105,11 @@ class Product
     {
         $this->time_prices = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -124,14 +125,14 @@ class Product
     public function setCode($code)
     {
         $this->code = $code;
-
+    
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string
+     * @return string 
      */
     public function getCode()
     {
@@ -147,14 +148,14 @@ class Product
     public function setName($name)
     {
         $this->name = $name;
-
+    
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -170,14 +171,14 @@ class Product
     public function setLastPrice($lastPrice)
     {
         $this->last_price = $lastPrice;
-
+    
         return $this;
     }
 
     /**
      * Get last_price
      *
-     * @return float
+     * @return float 
      */
     public function getLastPrice()
     {
@@ -193,14 +194,14 @@ class Product
     public function setLastStock($lastStock)
     {
         $this->last_stock = $lastStock;
-
+    
         return $this;
     }
 
     /**
      * Get last_stock
      *
-     * @return float
+     * @return float 
      */
     public function getLastStock()
     {
@@ -216,41 +217,18 @@ class Product
     public function setLastAddDate($lastAddDate)
     {
         $this->last_add_date = $lastAddDate;
-
+    
         return $this;
     }
 
     /**
      * Get last_add_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getLastAddDate()
     {
         return $this->last_add_date;
-    }
-
-    /**
-     * Set unit
-     *
-     * @param string $unit
-     * @return Product
-     */
-    public function setUnit($unit)
-    {
-        $this->unit = $unit;
-
-        return $this;
-    }
-
-    /**
-     * Get unit
-     *
-     * @return string
-     */
-    public function getUnit()
-    {
-        return $this->unit;
     }
 
     /**
@@ -262,14 +240,14 @@ class Product
     public function setDescription($description)
     {
         $this->description = $description;
-
+    
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string
+     * @return string 
      */
     public function getDescription()
     {
@@ -285,18 +263,41 @@ class Product
     public function setSupplier(\Common\DataBundle\Entity\Supplier $supplier = null)
     {
         $this->supplier = $supplier;
-
+    
         return $this;
     }
 
     /**
      * Get supplier
      *
-     * @return Common\DataBundle\Entity\Supplier
+     * @return Common\DataBundle\Entity\Supplier 
      */
     public function getSupplier()
     {
         return $this->supplier;
+    }
+
+    /**
+     * Set unit
+     *
+     * @param Common\DataBundle\Entity\Unit $unit
+     * @return Product
+     */
+    public function setUnit(\Common\DataBundle\Entity\Unit $unit = null)
+    {
+        $this->unit = $unit;
+    
+        return $this;
+    }
+
+    /**
+     * Get unit
+     *
+     * @return Common\DataBundle\Entity\Unit 
+     */
+    public function getUnit()
+    {
+        return $this->unit;
     }
 
     /**
@@ -308,7 +309,7 @@ class Product
     public function addTimePrice(\Common\DataBundle\Entity\TimePrice $timePrices)
     {
         $this->time_prices[] = $timePrices;
-
+    
         return $this;
     }
 
@@ -325,7 +326,7 @@ class Product
     /**
      * Get time_prices
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getTimePrices()
     {

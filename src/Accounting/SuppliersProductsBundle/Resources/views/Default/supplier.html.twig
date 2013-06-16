@@ -1,0 +1,17 @@
+{# src/Accounting/SuppliersProductsBundle/Resources/views/Default/supplier.html.twig #}
+<div id="supplierNew">
+
+    <form id="supplierForm">
+        <div class="k-edit-form-container">
+            <div class="k-edit-label"><label>Supplier Name:</label></div>
+            <div class="k-edit-field"><input class="k-input k-textbox" data-bind="value: name" /></div>
+            <div class="k-edit-label"><label>Address:</label></div>
+            <div class="k-edit-field"><input class="k-input k-textbox" data-bind="value: address" /></div>
+            <div class="k-edit-label"><label>Description :</label></div>
+            <div class="k-edit-field"><input class="k-input k-textbox" data-bind="value: description" /></div>
+            <a class="k-button k-button-icontext k-grid-update" href="#" data-bind="click: save"><span class="k-icon k-update"></span>Save</a>
+            <a class="k-button k-button-icontext k-grid-cancel" href="#" data-bind="click: cancel"><span class="k-icon k-cancel"></span>Cancel</a>
+        </div>
+    </form>
+
+</div>

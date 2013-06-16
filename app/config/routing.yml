@@ -1,3 +1,8 @@
+accounting_common_admin:
+    resource: "@CommonDataBundle/Controller/"
+    type: annotation
+    prefix:   /admin
+
 accounting_charges:
     resource: "@AccountingChargesBundle/Resources/config/routing.yml"
     prefix:   /
