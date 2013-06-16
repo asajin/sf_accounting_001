@@ -1,7 +1,11 @@
 var spSourceObj = {
     type: "json",
     transport : {
-        read: spIndexUrlObj.read
+        read: {
+            url: spIndexUrlObj.read,
+            dataType: "json",
+            cache: false
+        }
     },
     schema: spSchemaObj,
     pageSize: 10,

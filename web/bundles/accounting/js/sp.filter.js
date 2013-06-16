@@ -1,30 +1,51 @@
-$(document).ready(function() {
-    
-    $("#supplier_filter").change(function(){
-        console.log("asdf asd -- " + $(this).val());
-    
-        var value = $(this).val()
-        if (value) {
-            $("#grid").data("kendoGrid").dataSource.filter({
-                field: "supplier_name", 
-                operator: "contains", 
-                value: value
-            });
+function spFieldFilterContains(field) {
+    var value = field.val()
+    if (value) {
+        var isInFilter = false;
+        var fieldFilter = {
+            field: field.attr('name'),
+            operator: "contains",
+            value: value
+        };
+        var filtersObj = $("#grid").data("kendoGrid").dataSource.filter();
+        if(filtersObj != undefined) {
+            for(var i in filtersObj.filters) {
+                if(filtersObj.filters[i]['field'] == field.attr('name')) {
+                    filtersObj.filters[i]['value'] = value;
+                    isInFilter = true;
+                }
+            }
+            if(!isInFilter) {
+                filtersObj.filters.push(fieldFilter);
+            }
         } else {
-            $("#grid").data("kendoGrid").dataSource.filter({});
+            $("#grid").data("kendoGrid").dataSource.filter(fieldFilter);
         }
+
+        $("#grid").data("kendoGrid").dataSource.filter(filtersObj);
+    } else {
+        $("#grid").data("kendoGrid").dataSource.filter({});
+    }
+}
+
+$(document).ready(function() {
+
+    $("#supplier_filter").change(function(){
+        spFieldFilterContains($(this));
     });
-    // create DatePicker from input HTML element
- 
+
+    $("#product_filter").change(function(){
+        spFieldFilterContains($(this));
+    });
+
     $("#tabstrip").kendoTabStrip({
         animation:	{
             open: {
                 effects: "fadeIn"
             }
         }
-
     });
- 
+
     function startChange() {
         var startDate = start.value();
 
@@ -45,6 +66,7 @@ $(document).ready(function() {
         }
     }
 
+    // create DatePicker from input HTML element
     var start = $("#start").kendoDatePicker({
         change: startChange
     }).data("kendoDatePicker");
@@ -66,18 +88,22 @@ $(document).ready(function() {
         // display month and year in the input
         format: "MMMM yyyy"
     });
-                
+
     $("#grid").kendoGrid({
         dataSource: {
             serverFiltering: true,
             type: "json",
             transport : {
-                read: spFilterUrlObj.read
+                read: {
+                    url: spFilterUrlObj.read,
+                    dataType: "json",
+                    cache: false
+                }
             },
             schema: spSchemaObj,
             pageSize: 10,
             aggregate: [{
-                field: "amount", 
+                field: "amount",
                 aggregate: "sum"
             }]
         },

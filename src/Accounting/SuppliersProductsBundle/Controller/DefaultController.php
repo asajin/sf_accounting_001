@@ -23,6 +23,63 @@ class DefaultController extends Controller
         return $this->render('AccountingSuppliersProductsBundle:Default:filter.html.twig');
     }
 
+    public function listFilteredAction(Request $request)
+    {
+        $filter = $request->get('filter');
+
+        $repository = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:TimePrice');
+
+        $query = $repository->createQueryBuilder('tp')
+                ->select('tp.local_price as local_price')
+                ->addSelect('tp.currency_price as currency_price')
+                ->addSelect('tp.currency_rate as currency_rate')
+                ->addSelect('tp.price_date as price_date')
+                ->addSelect('u.name as unit')
+                ->addSelect('tp.stock as stock')
+                ->addSelect('p.name as product_name')
+                ->addSelect('s.name as supplier_name')
+                ->addSelect('(tp.local_price * tp.stock) as amount')
+                ->leftJoin('tp.product', 'p')
+                ->leftJoin('tp.supplier', 's')
+                ->leftJoin('p.unit', 'u');
+
+        if($filter) {
+            foreach ($filter['filters'] as $value) {
+                switch ($value['field']) {
+                    case 'local_price':
+                        break;
+                    case 'currency_price':
+                        break;
+                    case 'price_date':
+                        break;
+                    case 'unit':
+                        break;
+                    case 'stock':
+                        break;
+                    case 'product_name':
+                        $query->andWhere('p.name LIKE :product_name')
+                            ->setParameter('product_name', '%'.$value['value'].'%');
+                        break;
+                    case 'supplier_name':
+                        $query->andWhere('s.name LIKE :supplier_name')
+                            ->setParameter('supplier_name', '%'.$value['value'].'%');
+                        break;
+                    case 'amount':
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        $timePrices = $query->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
+
+        $response = new Response(json_encode($timePrices));
+
+        return $response;
+    }
+
     public function newAction()
     {
         return $this->render('AccountingSuppliersProductsBundle:Default:new.html.twig');

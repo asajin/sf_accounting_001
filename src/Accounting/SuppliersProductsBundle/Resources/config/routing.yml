@@ -72,3 +72,10 @@ AccountingSuppliersProductsBundle_dropdowns:
     requirements:
         _method:  GET
         _format: JSON
+
+AccountingSuppliersProductsBundle_listFiltered:
+    pattern:  /service/sp/filter.{_format}
+    defaults: { _controller: AccountingSuppliersProductsBundle:Default:listFiltered, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON

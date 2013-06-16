@@ -12,11 +12,11 @@
                 <th data-field="price_date">Buy Date</th>
                 <th data-field="supplier_name">
                     Supplier<br />
-                    <input id="supplier_filter" class="k-input k-textbox" data-bind="value: supplier_name" style="width: 100%" />
+                    <input id="supplier_filter" name="supplier_name" class="k-input k-textbox" style="width: 100%" />
                 </th>
                 <th data-field="product_name">
                     Product Name<br />
-                    <input class="k-input k-textbox" data-bind="value: product_name" style="width: 100%" />
+                    <input id="product_filter" name="product_name" class="k-input k-textbox" style="width: 100%" />
                 </th>
                 <th data-field="stock">Stock (units)</th>
                 <th data-field="currency_price">Price<br>Currency</th>
@@ -29,7 +29,7 @@
 
 {% block javascripts_embedded %}
 <script>
-var spFilterUrlObj = { read: "{{ path('AccountingSuppliersProductsBundle_list') }}" }
+var spFilterUrlObj = { read: "{{ path('AccountingSuppliersProductsBundle_listFiltered') }}" }
 </script>
 <script src="{{ asset('bundles/accounting/js/sp.schema.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/sp.columns.js') }}"></script>
