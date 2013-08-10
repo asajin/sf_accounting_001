@@ -24,8 +24,8 @@ var unitSourceObj = new kendo.data.DataSource({
         parse:function (data) {
             $("#unitNew").data("kendoWindow").close();
             newColumnsObj.loadDropdowns(function(){
-                newColumnsObj.unitsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.units);
-                newColumnsObj.unitsDropdown.data('kendoDropDownList').refresh();
+//                newColumnsObj.unitsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.units);
+//                newColumnsObj.unitsDropdown.data('kendoDropDownList').refresh();
             });
             return data;
         }

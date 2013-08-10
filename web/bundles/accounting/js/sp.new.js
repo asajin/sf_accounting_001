@@ -54,10 +54,7 @@ var newSchemaObj = {
                 }
             },
             unit: {
-                defaultValue: {
-                    id: 0,
-                    name: "Unit"
-                }
+                type: "string"
             },
             stock: {
                 type: "string"
@@ -140,7 +137,7 @@ var newColumnsObj = {
             .kendoDropDownList({
                 autoBind: false,
                 dataSource: newColumnsObj.products
-            });
+            });//.change(function(){});
 
             $('<button id="open" class="k-button">Add</button>')
             .appendTo(container);
@@ -158,21 +155,24 @@ var newColumnsObj = {
         title: "Units",
         width: 20,
         editor: function(container, options) {
-            newColumnsObj.unitsDropdown = $('<input type="text" data-text-field="name" data-value-field="id" data-bind="value:product.unit"/>')
-            .appendTo(container)
-            .kendoDropDownList({
-                autoBind: false,
-                dataSource: newColumnsObj.units
-            });
-
-            $('<button id="unitAdd" class="k-button">Add</button>')
-            .appendTo(container);
-
-            $("#unitAdd").click( function (e) {
-                var win = $("#unitNew").data("kendoWindow");
-                win.center();
-                win.open();
-            });
+            $('<input type="text" class="k-input k-textbox" name="unit" data-bind="value:product.unit.name">')
+            .appendTo(container).attr('readonly', true);
+            
+//            newColumnsObj.unitsDropdown = $('<input type="text" data-text-field="name" data-value-field="id" data-bind="value:product.unit"/>')
+//            .appendTo(container)
+//            .kendoDropDownList({
+//                autoBind: false,
+//                dataSource: newColumnsObj.units
+//            });
+//
+//            $('<button id="unitAdd" class="k-button">Add</button>')
+//            .appendTo(container);
+//
+//            $("#unitAdd").click( function (e) {
+//                var win = $("#unitNew").data("kendoWindow");
+//                win.center();
+//                win.open();
+//            });
         },
         template: '#= product.unit.name #'
     },

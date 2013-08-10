@@ -29,9 +29,9 @@ var productSourceObj = new kendo.data.DataSource({
             $("#productNew").data("kendoWindow").close();
             newColumnsObj.loadDropdowns(function () {
                 newColumnsObj.productsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.products);
-                newColumnsObj.unitsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.units);
+//                newColumnsObj.unitsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.units);
                 newColumnsObj.productsDropdown.data('kendoDropDownList').refresh();
-                newColumnsObj.unitsDropdown.data('kendoDropDownList').refresh();
+//                newColumnsObj.unitsDropdown.data('kendoDropDownList').refresh();
             });
 //            newColumnsObj.products.push(data);
             //          console.log('success parse end');

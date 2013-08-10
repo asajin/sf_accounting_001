@@ -171,7 +171,13 @@ class DefaultController extends Controller
     {
         $models = json_decode($request->get('models'));
 
-        $sp = new TimePrice();
+        if (empty($models[0]->id)) {
+            $sp = new TimePrice();
+        } else {
+            $sp = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:TimePrice')
+                ->find($models[0]->id);
+        }
 
         $product = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:Product')
@@ -223,18 +229,26 @@ class DefaultController extends Controller
 
     public function createProductAction(Request $request)
     {
+        $em = $this->getDoctrine()->getEntityManager();
         $models = json_decode($request->get('models'));
 
         $product = new Product();
         $product->setCode($models[0]->code);
         $product->setName($models[0]->name);
-        $product->setUnit($models[0]->unit);
+        $unit = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Unit')
+                ->findOneByName($models[0]->unit);
+        if(empty($unit)) {
+            $unit = new Unit();
+            $unit->setName($models[0]->unit);
+            $em->persist($unit);
+        }
+        $product->setUnit($unit);
         $product->setLastPrice(0);
         $product->setLastStock(0);
-        $product->setLastAddDate(NULL);
+        $product->setLastAddDate(new \DateTime('now'));
         $product->setDescription($models[0]->description);
 
-        $em = $this->getDoctrine()->getEntityManager();
         $em->persist($product);
         $em->flush();
 
@@ -286,7 +300,8 @@ class DefaultController extends Controller
         $repositoryProducts = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:Product');
         $queryProducts = $repositoryProducts->createQueryBuilder('p')
-                ->select('p.id, p.name')
+                ->select('p, u')
+                ->leftJoin('p.unit', 'u')
                 ->getQuery();
         $products = $queryProducts->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         array_unshift($products, array('id' => 0, 'name' => ''));
