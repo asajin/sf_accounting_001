@@ -24,8 +24,9 @@ var unitSourceObj = new kendo.data.DataSource({
         parse:function (data) {
             $("#unitNew").data("kendoWindow").close();
             newColumnsObj.loadDropdowns(function(){
-//                newColumnsObj.unitsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.units);
-//                newColumnsObj.unitsDropdown.data('kendoDropDownList').refresh();
+                  if(productForm != undefined) {
+                      productForm.model.set('Units', newColumnsObj.units);
+                  }
             });
             return data;
         }
@@ -51,6 +52,7 @@ $(document).ready(function() {
         }
     }));
 
+    $("#unitNew").show();
     $("#unitNew").kendoWindow({
         visible: false,
         modal: true,

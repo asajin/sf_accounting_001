@@ -143,9 +143,7 @@ var newColumnsObj = {
             .appendTo(container);
 
             $("#open").click( function (e) {
-                var win = $("#productNew").data("kendoWindow");
-                win.center();
-                win.open();
+                productForm.open();
             });
         },
         template: '#= product.name #'

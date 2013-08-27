@@ -237,7 +237,7 @@ class DefaultController extends Controller
         $product->setName($models[0]->name);
         $unit = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:Unit')
-                ->findOneByName($models[0]->unit);
+                ->findOneById($models[0]->unit);
         if(empty($unit)) {
             $unit = new Unit();
             $unit->setName($models[0]->unit);
