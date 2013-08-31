@@ -5,6 +5,7 @@ var newColumnsObj = {
     products: [],
     suppliers: [],
     units: [],
+    customers: [],
 
     supplier: {
         field: "supplier",
@@ -39,7 +40,9 @@ var newColumnsObj = {
             .kendoDropDownList({
                 autoBind: false,
                 dataSource: newColumnsObj.products
-            });//.change(function(){});
+            }).change(function(){
+                options.model.set('sale_price', options.model.product.last_sale_price );
+            });
 
             $('<button id="open" class="k-button">Add</button>')
             .appendTo(container);
@@ -104,9 +107,18 @@ var newColumnsObj = {
             });
         }
     },
+    sale_price:{
+        field: "sale_price",
+        title: "SalePrice<br>Lei",
+        width: 50,
+        editor: function(container, options){
+            $('<input type="text" class="k-input k-textbox" name="sale_price" data-bind="value:' + options.field + '">')
+            .appendTo(container);
+        }
+    },
     local_price:{
         field: "local_price",
-        title: "Price<br>Lei",
+        title: "BuyPrice<br>Lei",
         width: 50,
         editor: function(container, options){
             $('<input type="text" class="k-input k-textbox" name="stock" data-bind="value:' + options.field + '">')
@@ -120,12 +132,12 @@ var newColumnsObj = {
     },
     amount:{
         field: "amount",
-        title: "Amount",
+        title: "Buy Amount",
         width: 50,
         groupFooterTemplate: 'total: <i>#= Math.round(sum*100)/100#</i>',
         footerTemplate: 'total: <b>#= Math.round(sum*100)/100#</b>',
         editor: function(container, options){
-            $('<input type="text" class="k-input k-textbox" name="stock" data-bind="value:' + options.field + '">')
+            $('<input type="text" class="k-input k-textbox" name="amount" data-bind="value:' + options.field + '">')
             .appendTo(container).attr('readonly', true);
         }
     },
@@ -154,6 +166,7 @@ var newColumnsObj = {
             newColumnsObj.products = data['products'];
             newColumnsObj.suppliers = data['suppliers'];
             newColumnsObj.units = data['units'];
+            newColumnsObj.customers = data['customers'];
             if(jQuery.isFunction(callback)) {
                 callback();
             }
