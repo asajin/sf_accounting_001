@@ -8,7 +8,13 @@
     </ul>
     <div id="clientsDb">
 
-      {% block form %}{% endblock %}
+      {% block form %}
+      <div class="form-picker">
+                <input id="monthpicker" value="" style="width:150px" />
+
+                <button class="k-button" id="month_search">Search</button>
+            </div>
+      {% endblock %}
 
         <div id="" style="height: 500px">
             <table id="grid">
@@ -46,109 +52,8 @@
     
     
 {% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/warehouse.js') }}"></script>
 <script>
-    
-$(document).ready(function() {
-    var dataSource = createWarehouse(10);
-$("#grid").kendoGrid({
-    dataSource: {
-        data: dataSource,
-        autoSync: true,
-        schema: {
-            model: {
-                fields: {
-                    product_group: { type: "string", editable: false },
-                    code: { type: "string", editable: false },
-                    product_name: { type: "string", editable: false },
-                    unit: { type: "string", editable: false },
-                    price: { type: "number", editable: false },
-                    first_stock: { type: "number", editable: false },
-                    first_amount: { type: "number", editable: false },
-                    first_date: { type: "date", editable: false },
-                    income_stock: { type: "number" },
-                    income_amount: { type: "number", editable: false },
-                    expense_stock: { type: "number" },
-                    expense_amount: { type: "number", editable: false },
-                    last_stock: { type: "number", editable: false },
-                    last_amount: { type: "number", editable: false },
-                    last_date: { type: "date", editable: false }
-                }
-            }
-        },
-        pageSize: 10,
-    },
-    height: 500,
-    scrollable: true,
-    //sortable: true,
-    //filterable: true,
-    pageable: {
-        pageSizes: true,
-        refresh: true
-    },
-    editable: false,
-    change: function(arg){
-        var grid = $("#grid").data("kendoGrid");
-        grid.saveRow();
-        grid.refresh();
-        console.log("save & refresh");
-    },
-    columns: [
-        {
-            field: "product_group",
-            title: "Product Group"
-        },
-        {
-            field: "code",
-            title: "code",
-            width: 70
-        },
-        {
-            field: "product_name",
-            title: "Product Name"
-        },
-        {
-            field: "unit"
-        },
-        {
-            field: "first_stock",
-            title: "Stock<br>2012/10/31"
-        },
-        {
-            field: "first_amount",
-            title: "Amount<br>2012/10/31",
-            template: '#= kendo.toString(price*first_stock, "n")#'
-        },
-        {
-            field: "income_stock",
-            title: "Income Stock"
-        },
-        {
-            field: "income_amount",
-            title: "Income Amount",
-            template: '#= kendo.toString(price*income_stock, "n")#'
-        },
-        {
-            field: "expense_stock",
-            title: "Expense Stock"
-        },
-        {
-            field: "expense_amount",
-            title: "Expense Amount",
-            template: '#= kendo.toString(price*expense_stock, "n")#'
-        },
-        {
-            field: "last_stock",
-            title: "Stock<br>2012/11/30",
-            template: '#= kendo.toString(first_stock + income_stock - expense_stock, "n")#'
-        },
-        {
-            field: "last_amount",
-            title: "Amount<br>2012/11/30",
-            template: '#= kendo.toString(price*(first_stock + income_stock - expense_stock), "n")#'
-        },
-    ]
-});
-});
+var warehouseUrlObj = {read: "{{ path('AccountingWarehouseBundle_list') }}"};
 </script>
+<script src="{{ asset('bundles/accounting/js/warehouse.main.js') }}"></script>
 {% endblock %}
