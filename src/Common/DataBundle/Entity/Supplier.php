@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Common\DataBundle\Entity\Product;
 use Common\DataBundle\Entity\TimePrice;
+use Common\DataBundle\Entity\SaleTimePrice;
 
 /**
  * Common\DataBundle\Entity\Supplier
@@ -59,6 +60,13 @@ class Supplier
      * @ORM\OneToMany(targetEntity="TimePrice", mappedBy="supplier")
      */
     protected $time_prices;
+
+    /**
+     * @var SaleTimePrice $sale_time_prices
+     *
+     * @ORM\OneToMany(targetEntity="SaleTimePrice", mappedBy="supplier")
+     */
+    protected $sale_time_prices;
 
     /**
      * Return name of supplier
@@ -221,5 +229,38 @@ class Supplier
     public function getTimePrices()
     {
         return $this->time_prices;
+    }
+
+    /**
+     * Add sale_time_prices
+     *
+     * @param Common\DataBundle\Entity\SaleTimePrice $saleTimePrices
+     * @return Supplier
+     */
+    public function addSaleTimePrice(\Common\DataBundle\Entity\SaleTimePrice $saleTimePrices)
+    {
+        $this->sale_time_prices[] = $saleTimePrices;
+    
+        return $this;
+    }
+
+    /**
+     * Remove sale_time_prices
+     *
+     * @param Common\DataBundle\Entity\SaleTimePrice $saleTimePrices
+     */
+    public function removeSaleTimePrice(\Common\DataBundle\Entity\SaleTimePrice $saleTimePrices)
+    {
+        $this->sale_time_prices->removeElement($saleTimePrices);
+    }
+
+    /**
+     * Get sale_time_prices
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getSaleTimePrices()
+    {
+        return $this->sale_time_prices;
     }
 }

@@ -286,6 +286,11 @@ ul#menu
     padding-left: 0;
 }
 
+#symfony-header ul#menu
+{
+    margin-top: 30px;
+}
+
 #menu li
 {
     padding-left: 0;

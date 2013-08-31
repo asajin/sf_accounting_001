@@ -60,6 +60,7 @@ $(document).ready(function() {
         }
     }));
 
+    $("#supplierNew").show();
     $("#supplierNew").kendoWindow({
         visible: false,
         modal: true,

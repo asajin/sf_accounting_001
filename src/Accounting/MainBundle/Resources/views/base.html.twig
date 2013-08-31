@@ -14,19 +14,13 @@
                 <a href="{{ path('AccountingMainBundle_homepage') }}">
                     <img src="{{ asset('bundles/accounting/images/cashbox2.png') }}" alt="Accounting logo" />
                 </a>
+                <!--
                 <form id="symfony-search" method="GET" action="http://symfony.com/search">
                     <label for="symfony-search-field"><span>Search on website</span></label>
                     <input name="q" id="symfony-search-field" type="search" placeholder="Search on website" class="medium_txt" />
                     <input type="submit" class="symfony-button-grey" value="OK" />
                 </form>
-            </div>
-
-            {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="flash-message">
-                    <em>Notice</em>: {{ flashMessage }}
-                </div>
-            {% endfor %}
-
+                -->
             {% block content_header %}
                 <ul id="menu">
                     {% block content_header_more %}
@@ -45,6 +39,14 @@
                 </ul>
                 <div style="clear: both"></div>
             {% endblock %}
+            </div>
+
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="flash-message">
+                    <em>Notice</em>: {{ flashMessage }}
+                </div>
+            {% endfor %}
+
 
             <div class="symfony-content">
                 {% block body %}{% endblock %}

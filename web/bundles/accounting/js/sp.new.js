@@ -65,6 +65,9 @@ var newSchemaObj = {
             local_price: {
                 type: "number"
             },
+            sale_price: {
+                type: "number"
+            },
             amount: {
                 type: "number"
             },
@@ -125,6 +128,7 @@ $(document).ready(function() {
         newColumnsObj.currency_price,
         newColumnsObj.currency_rate,
         newColumnsObj.local_price,
+        newColumnsObj.sale_price,
         newColumnsObj.amount,
         {
             command: ["edit", "destroy"],

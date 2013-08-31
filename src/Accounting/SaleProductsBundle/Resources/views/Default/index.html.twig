@@ -5,79 +5,34 @@
     <h2>Sale Products</h2>
     <div id="clientsDb">
 
-        <div id="grid" style="height: 350px"></div>
+        <div id="grid" style="height: 500px"></div>
 
     </div>
+    {% include 'AccountingSuppliersProductsBundle::Default/product.html.twig' %}
+    {% include 'AccountingSuppliersProductsBundle::Default/unit.html.twig' %}
 {% endblock %}
-    
-    
+
+
 {% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/sale_prestations.js') }}"></script>
 <script>
-$(document).ready(function() {
-$("#grid").kendoGrid({
-    dataSource: {
-        data: createPriceList(50),
-        pageSize: 10
-    },
-    height: 350,
-    scrollable: true,
-    sortable: true,
-    filterable: true,
-    pageable: {
-        pageSizes: true,
-        refresh: true
-        //input: true
-        //numeric: false
-    },
-    columns: [
-        {
-            field: "date",
-            title: "Date",
-            width: 20
-        },
-        {
-            field: "client",
-            title: "Client",
-            width: 30
-        },
-        {
-            field: "code",
-            title: "Code",
-            width: 15
-        },
-        {
-            field: "product",
-            title: "Product",
-            width: 20
-        },
-        {
-            field: "units",
-            title: "Unit",
-            width: 10
-        },
-        {
-            field: "count",
-            title: "Count",
-            width: 10
-        },
-        {
-            field: "price",
-            title: "Price",
-            width: 10
-        },
-        {
-            field: "amount",
-            title: "Amount",
-            width: 10
-        },
-        {
-            field: "real_amount",
-            title: "Real amount",
-            width: 10
-        }
-    ]
-});
-});
+var newUrlObj = {
+read: "{{ path('AccountingSuppliersProductsBundle_listFull') }}",
+create: "{{ path('AccountingSuppliersProductsBundle_create') }}",
+destroy: "{{ path('AccountingSuppliersProductsBundle_delete') }}",
+load: "{{ path('AccountingSuppliersProductsBundle_dropdowns') }}",
+createProduct: "{{ path('AccountingSuppliersProductsBundle_createProduct') }}",
+createSupplier: "{{ path('AccountingSuppliersProductsBundle_createSupplier') }}",
+createUnit: "{{ path('AccountingSuppliersProductsBundle_createUnit') }}",
+}
+var saleUrlObj = {
+read: "{{ path('AccountingSaleProductsBundle_list') }}",
+create: "{{ path('AccountingSaleProductsBundle_create') }}",
+destroy: "{{ path('AccountingSaleProductsBundle_delete') }}",
+load: "{{ path('AccountingSuppliersProductsBundle_dropdowns') }}",
+}
 </script>
+<script src="{{ asset('bundles/accounting/js/sale.product.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.new.columns.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.product.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/sp.unit.js') }}"></script>
 {% endblock %}
