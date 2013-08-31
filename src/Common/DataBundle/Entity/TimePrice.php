@@ -39,6 +39,13 @@ class TimePrice
     protected $product;
 
     /**
+     * @var decimal $sale_price
+     *
+     * @ORM\Column(name="sale_price", type="decimal", scale=2)
+     */
+    protected $sale_price;
+
+    /**
      * @var decimal $local_price
      *
      * @ORM\Column(name="local_price", type="decimal", scale=2)
@@ -303,5 +310,28 @@ class TimePrice
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set sale_price
+     *
+     * @param float $salePrice
+     * @return TimePrice
+     */
+    public function setSalePrice($salePrice)
+    {
+        $this->sale_price = $salePrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get sale_price
+     *
+     * @return float 
+     */
+    public function getSalePrice()
+    {
+        return $this->sale_price;
     }
 }

@@ -1,5 +1,5 @@
 {# src/Accounting/SuppliersProductsBundle/Resources/views/Default/product.html.twig #}
-<div id="productNew">
+<div id="productNew" style="display:none">
 
     <form id="productForm">
         <div class="k-edit-form-container">
@@ -10,7 +10,10 @@
             <div class="k-edit-label"><label>Description :</label></div>  
             <div class="k-edit-field"><input class="k-input k-textbox" data-bind="value: description" /></div>
             <div class="k-edit-label"><label>Unit:</label></div> 
-            <div class="k-edit-field"><input class="k-input k-textbox" data-bind="value: unit" /></div>
+            <div class="k-edit-field" id="productForm-unit">
+                <input required data-role="dropdownlist" data-bind="source: Units, value: unit.id" data-text-field="name" data-value-field="id" ></select>
+                <button class="k-button" data-bind="click: unitAdd">Add</button>
+            </div>
             <a class="k-button k-button-icontext k-grid-update" href="#" data-bind="click: save"><span class="k-icon k-update"></span>Save</a>
             <a class="k-button k-button-icontext k-grid-cancel" href="#" data-bind="click: cancel"><span class="k-icon k-cancel"></span>Cancel</a>
         </div>
