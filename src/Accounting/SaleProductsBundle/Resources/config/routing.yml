@@ -4,3 +4,24 @@ AccountingSaleProductsBundle_index:
     defaults: { _controller: AccountingSaleProductsBundle:Default:index }
     requirements:
         _method:  GET
+
+AccountingSaleProductsBundle_list:
+    pattern:  /service/sale/product/list.{_format}
+    defaults: { _controller: AccountingSaleProductsBundle:Default:list, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON
+
+AccountingSaleProductsBundle_create:
+    pattern:  /service/sale/product/create.{_format}
+    defaults: { _controller: AccountingSaleProductsBundle:Default:create, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
+AccountingSaleProductsBundle_delete:
+    pattern:  /service/sale/product/delete.{_format}
+    defaults: { _controller: AccountingSaleProductsBundle:Default:delete, _format: json, _locale: en }
+    requirements:
+        _method:  DELETE
+        _format: JSON

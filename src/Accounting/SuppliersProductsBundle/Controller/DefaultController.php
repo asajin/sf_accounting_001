@@ -182,6 +182,12 @@ class DefaultController extends Controller
         $product = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:Product')
                 ->find($models[0]->product->id);
+        if(empty($models[0]->id)) {
+            $product->setLastSalePrice($models[0]->sale_price);
+            $product->setLastLocalPrice($models[0]->local_price);
+            $product->setLastStock($models[0]->stock);
+            $product->setLastAddDate(new \DateTime('now'));
+        }
         $sp->setProduct($product);
 
         $supplier = $this->getDoctrine()
@@ -191,6 +197,7 @@ class DefaultController extends Controller
 
         $sp->setCurrencyPrice($models[0]->currency_price);
         $sp->setLocalPrice($models[0]->local_price);
+        $sp->setSalePrice($models[0]->sale_price);
         $sp->setCurrencyRate($models[0]->currency_rate);
         $sp->setPriceDate(new \DateTime($models[0]->price_date));
         $sp->setStock($models[0]->stock);
@@ -321,11 +328,20 @@ class DefaultController extends Controller
                 ->getQuery();
         $units = $queryUnits->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         array_unshift($units, array('id' => 0, 'name' => ''));
+        
+        $repositoryCustomers = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Customer');
+        $queryCustomers = $repositoryCustomers->createQueryBuilder('c')
+                ->select('c.id, c.name')
+                ->getQuery();
+        $customers = $queryCustomers->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        array_unshift($customers, array('id' => 0, 'name' => ''));
 
         $response = new Response(json_encode(
                                 array('products' => $products,
                                     'suppliers' => $suppliers,
-                                    'units' => $units)));
+                                    'units' => $units,
+                                    'customers' => $customers)));
 
         return $response;
     }

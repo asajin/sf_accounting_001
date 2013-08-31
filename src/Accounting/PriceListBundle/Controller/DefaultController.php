@@ -18,6 +18,9 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()
             ->getRepository('CommonDataBundle:Product');
         $query = $repository->createQueryBuilder('p')
+            ->select('p, u')
+            ->leftJoin('p.unit', 'u')
+            ->where('p.last_sale_price > 0')
             ->getQuery();
         $products = $query->getResult(Query::HYDRATE_ARRAY);
 
