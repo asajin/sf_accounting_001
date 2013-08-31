@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Common\DataBundle\Entity\Supplier;
 use Common\DataBundle\Entity\TimePrice;
+use Common\DataBundle\Entity\SaleTimePrice;
 
 /**
  * @ORM\Table(name="product")
@@ -46,11 +47,18 @@ class Product
     protected $name;
 
     /**
-     * @var decimal $last_price
+     * @var decimal $last_sale_price
      *
-     * @ORM\Column(name="last_price", type="decimal", scale=2)
+     * @ORM\Column(name="last_sale_price", type="decimal", scale=2)
      */
-    protected $last_price;
+    protected $last_sale_price;
+
+    /**
+     * @var decimal $last_local_price
+     *
+     * @ORM\Column(name="last_local_price", type="decimal", scale=2)
+     */
+    protected $last_local_price;
 
     /**
      * @var decimal $last_stock
@@ -87,6 +95,13 @@ class Product
      * @ORM\OneToMany(targetEntity="TimePrice", mappedBy="product")
      */
     protected $time_prices;
+
+    /**
+     * @var SaleTimePrice $sale_time_prices
+     *
+     * @ORM\OneToMany(targetEntity="SaleTimePrice", mappedBy="product")
+     */
+    protected $sale_time_prices;
 
     /**
      * Return name of product
@@ -331,5 +346,84 @@ class Product
     public function getTimePrices()
     {
         return $this->time_prices;
+    }
+
+    /**
+     * Add sale_time_prices
+     *
+     * @param Common\DataBundle\Entity\SaleTimePrice $saleTimePrices
+     * @return Product
+     */
+    public function addSaleTimePrice(\Common\DataBundle\Entity\SaleTimePrice $saleTimePrices)
+    {
+        $this->sale_time_prices[] = $saleTimePrices;
+    
+        return $this;
+    }
+
+    /**
+     * Remove sale_time_prices
+     *
+     * @param Common\DataBundle\Entity\SaleTimePrice $saleTimePrices
+     */
+    public function removeSaleTimePrice(\Common\DataBundle\Entity\SaleTimePrice $saleTimePrices)
+    {
+        $this->sale_time_prices->removeElement($saleTimePrices);
+    }
+
+    /**
+     * Get sale_time_prices
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getSaleTimePrices()
+    {
+        return $this->sale_time_prices;
+    }
+
+    /**
+     * Set last_sale_price
+     *
+     * @param float $lastSalePrice
+     * @return Product
+     */
+    public function setLastSalePrice($lastSalePrice)
+    {
+        $this->last_sale_price = $lastSalePrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get last_sale_price
+     *
+     * @return float 
+     */
+    public function getLastSalePrice()
+    {
+        return $this->last_sale_price;
+    }
+
+    /**
+     * Set last_local_price
+     *
+     * @param float $lastLocalPrice
+     * @return Product
+     */
+    public function setLastLocalPrice($lastLocalPrice)
+    {
+        $this->last_local_price = $lastLocalPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get last_local_price
+     *
+     * @return float 
+     */
+    public function getLastLocalPrice()
+    {
+        return $this->last_local_price;
     }
 }
