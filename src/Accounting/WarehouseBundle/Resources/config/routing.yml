@@ -1,3 +1,10 @@
 AccountingWarehouseBundle_index:
     pattern:  /warehouse
     defaults: { _controller: AccountingWarehouseBundle:Default:index }
+
+AccountingWarehouseBundle_list:
+    pattern:  /service/warehouse/list.{_format}
+    defaults: { _controller: AccountingWarehouseBundle:Default:list, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON
