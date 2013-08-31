@@ -18,58 +18,88 @@ var productSourceObj = new kendo.data.DataSource({
         model: {
             id: "id",
             fields: {
-                code: {type: "string"},
-                name: {type: "string"},
-                unit: {type: "string"},
-                description: {type: "string"}
+                code: {
+                    type: "string"
+                },
+                name: {
+                    type: "string"
+                },
+                unit: {
+                    defaultValue: {
+                        id: 0,
+                        name: "Unit"
+                    }
+                },
+                description: {
+                    type: "string"
+                }
             }
         },
         parse:function (data) {
-            //          console.log('success parse start');
-            $("#productNew").data("kendoWindow").close();
+            productForm.window.data("kendoWindow").close();
             newColumnsObj.loadDropdowns(function () {
                 newColumnsObj.productsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.products);
-                newColumnsObj.unitsDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.units);
                 newColumnsObj.productsDropdown.data('kendoDropDownList').refresh();
-                newColumnsObj.unitsDropdown.data('kendoDropDownList').refresh();
             });
-//            newColumnsObj.products.push(data);
-            //          console.log('success parse end');
             return data;
         }
     }
 });
 
-$(document).ready(function() {
-
-    kendo.bind($("#productForm"), kendo.observable({
+var productForm = {
+    model: false,
+    modelObj: {
         code: "",
         name: "",
-        unit: "",
+        unit: {},
+        Units: [],
         description: "",
         productsSource: productSourceObj,
         save: function() {
-            console.log('update');
             this.productsSource.add({
                 code:this.code,
                 name:this.name,
-                unit:this.unit,
+                unit:this.unit.id,
                 description:this.description
             });
             this.productsSource.sync();
-            console.log('success sync');
         },
         cancel: function(e) {
             e.preventDefault();
-            $("#productNew").data("kendoWindow").close();
+            productForm.window.data("kendoWindow").close();
+        },
+        unitAdd: function(e) {
+            e.preventDefault();
+            var win = $("#unitNew").data("kendoWindow");
+            win.center();
+            win.open();
         }
-    }));
+    },
+    window: null,
+    init: function() {
+        productForm.window.show()
+        productForm.window.kendoWindow({
+            visible: false,
+            modal: true,
+            title: "Create product",
+            actions: ["Refresh", "Maximize", "Close"]
+        });
+        productForm.modelObj.unit = newColumnsObj.units[0];
+        productForm.modelObj.Units = newColumnsObj.units;
+        productForm.model = kendo.observable(productForm.modelObj);
+        kendo.bind($("#productForm"), productForm.model);
+    },
+    open: function() {
+        var window = productForm.window.data("kendoWindow");
+        if(window == undefined) {
+            productForm.init();
+            window = productForm.window.data("kendoWindow");
+        }
+        window.center();
+        window.open();
+    }
+};
 
-    $("#productNew").kendoWindow({
-        visible: false,
-        modal: true,
-        title: "Create product",
-        actions: ["Refresh", "Maximize", "Close"]
-    });
-
+$(document).ready(function() {
+    productForm.window = $("#productNew");
 });
