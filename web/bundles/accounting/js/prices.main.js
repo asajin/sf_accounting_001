@@ -1,7 +1,10 @@
 var pricesSourceObj = {
     type: "json",
     transport : {
-        read: pricesUrlObj.read
+        read: {
+            url:pricesUrlObj.read,
+            cache: false
+        }
     },
     schema: {
         model: {
@@ -9,9 +12,12 @@ var pricesSourceObj = {
                 id: {type: "number"},
                 code: {type: "string"},
                 name: {type: "string"},
-                unit: {type: "string"},
-                last_stock: {type: "number"},
-                last_price: {type: "number"}
+                unit: {
+                        defaultValue: {
+                            id: 0,
+                            name: "Unit"
+                        }},
+                last_sale_price: {type: "number"}
             }
         }
     },
@@ -44,16 +50,12 @@ $(document).ready(function() {
         {
             field: "unit",
             title: "Units",
-            width: 15
+            width: 15,
+            template: '#= unit.name #'
         },
         {
-            field: "last_stock",
-            title: "Stock",
-            width: 20
-        },
-        {
-            field: "last_price",
-            title: "Price",
+            field: "last_sale_price",
+            title: "Sale Price",
             width: 30
         }
         ]
