@@ -13,12 +13,13 @@ class ProductType extends AbstractType
         $builder
             ->add('code')
             ->add('name')
-            ->add('last_price')
+            ->add('last_sale_price')
+            ->add('last_local_price')
             ->add('last_stock')
             ->add('last_add_date')
-            ->add('unit')
             ->add('description')
             ->add('supplier')
+            ->add('unit')
         ;
     }
 
