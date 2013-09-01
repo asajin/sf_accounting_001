@@ -28,7 +28,7 @@ class Product
      * @var Common\DataBundle\Entity\Supplier $supplier
      *
      * @ORM\ManyToOne(targetEntity="Supplier", inversedBy="products")
-     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id", onDelete="set null")
      */
     protected $supplier;
 
@@ -78,7 +78,7 @@ class Product
      * @var Common\DataBundle\Entity\Unit $unit
      *
      * @ORM\ManyToOne(targetEntity="Unit", inversedBy="products")
-     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id", onDelete="set null")
      */
     protected $unit;
 
