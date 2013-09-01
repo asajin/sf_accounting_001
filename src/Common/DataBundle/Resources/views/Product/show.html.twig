@@ -15,8 +15,12 @@
             <td>{{ entity.name }}</td>
         </tr>
         <tr>
-            <th>Last_price</th>
-            <td>{{ entity.lastprice }}</td>
+            <th>Last_sale_price</th>
+            <td>{{ entity.lastsaleprice }}</td>
+        </tr>
+        <tr>
+            <th>Last_local_price</th>
+            <td>{{ entity.lastlocalprice }}</td>
         </tr>
         <tr>
             <th>Last_stock</th>
@@ -25,10 +29,6 @@
         <tr>
             <th>Last_add_date</th>
             <td>{{ entity.lastadddate|date('Y-m-d H:i:s') }}</td>
-        </tr>
-        <tr>
-            <th>Unit</th>
-            <td>{{ entity.unit }}</td>
         </tr>
         <tr>
             <th>Description</th>

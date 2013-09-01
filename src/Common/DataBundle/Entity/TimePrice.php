@@ -26,7 +26,7 @@ class TimePrice
      * @var Common\DataBundle\Entity\Supplier $supplier
      *
      * @ORM\ManyToOne(targetEntity="Supplier", inversedBy="time_prices")
-     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id", onDelete="set null")
      */
     protected $supplier;
 
@@ -34,7 +34,7 @@ class TimePrice
      * @var Common\DataBundle\Entity\Product $product
      *
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="time_prices")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="set null")
      */
     protected $product;
 
