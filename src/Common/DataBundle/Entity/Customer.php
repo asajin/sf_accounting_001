@@ -60,6 +60,17 @@ class Customer
      * @ORM\OneToMany(targetEntity="SaleTimePrice", mappedBy="product")
      */
     protected $sale_time_prices;
+
+    /**
+     * Return name of product
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * Constructor
      */
