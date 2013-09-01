@@ -26,7 +26,7 @@ class SaleTimePrice extends BaseTimePrice
      * @var Common\DataBundle\Entity\Product $product
      *
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="sale_time_prices")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="set null")
      */
     protected $product;
 
@@ -34,7 +34,7 @@ class SaleTimePrice extends BaseTimePrice
      * @var Common\DataBundle\Entity\Customer $customer
      *
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="sale_time_prices")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", onDelete="set null")
      */
     protected $customer;
 

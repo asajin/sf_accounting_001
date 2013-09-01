@@ -28,7 +28,7 @@ class Product
      * @var Common\DataBundle\Entity\Supplier $supplier
      *
      * @ORM\ManyToOne(targetEntity="Supplier", inversedBy="products")
-     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id", onDelete="set null")
      */
     protected $supplier;
 
@@ -78,7 +78,7 @@ class Product
      * @var Common\DataBundle\Entity\Unit $unit
      *
      * @ORM\ManyToOne(targetEntity="Unit", inversedBy="products")
-     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id", onDelete="set null")
      */
     protected $unit;
 
@@ -120,7 +120,7 @@ class Product
     {
         $this->time_prices = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
@@ -178,26 +178,49 @@ class Product
     }
 
     /**
-     * Set last_price
+     * Set last_sale_price
      *
-     * @param float $lastPrice
+     * @param float $lastSalePrice
      * @return Product
      */
-    public function setLastPrice($lastPrice)
+    public function setLastSalePrice($lastSalePrice)
     {
-        $this->last_price = $lastPrice;
+        $this->last_sale_price = $lastSalePrice;
     
         return $this;
     }
 
     /**
-     * Get last_price
+     * Get last_sale_price
      *
      * @return float 
      */
-    public function getLastPrice()
+    public function getLastSalePrice()
     {
-        return $this->last_price;
+        return $this->last_sale_price;
+    }
+
+    /**
+     * Set last_local_price
+     *
+     * @param float $lastLocalPrice
+     * @return Product
+     */
+    public function setLastLocalPrice($lastLocalPrice)
+    {
+        $this->last_local_price = $lastLocalPrice;
+    
+        return $this;
+    }
+
+    /**
+     * Get last_local_price
+     *
+     * @return float 
+     */
+    public function getLastLocalPrice()
+    {
+        return $this->last_local_price;
     }
 
     /**
@@ -379,51 +402,5 @@ class Product
     public function getSaleTimePrices()
     {
         return $this->sale_time_prices;
-    }
-
-    /**
-     * Set last_sale_price
-     *
-     * @param float $lastSalePrice
-     * @return Product
-     */
-    public function setLastSalePrice($lastSalePrice)
-    {
-        $this->last_sale_price = $lastSalePrice;
-    
-        return $this;
-    }
-
-    /**
-     * Get last_sale_price
-     *
-     * @return float 
-     */
-    public function getLastSalePrice()
-    {
-        return $this->last_sale_price;
-    }
-
-    /**
-     * Set last_local_price
-     *
-     * @param float $lastLocalPrice
-     * @return Product
-     */
-    public function setLastLocalPrice($lastLocalPrice)
-    {
-        $this->last_local_price = $lastLocalPrice;
-    
-        return $this;
-    }
-
-    /**
-     * Get last_local_price
-     *
-     * @return float 
-     */
-    public function getLastLocalPrice()
-    {
-        return $this->last_local_price;
     }
 }
