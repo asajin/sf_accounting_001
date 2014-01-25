@@ -27,5 +27,8 @@ load: "{{ path('AccountingChargesBundle_load') }}",
 create: "{{ path('AccountingChargesBundle_create') }}"
 }
 </script>
+<script src="{{ asset('bundles/accounting/js/charges.search.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/charges.source.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/charges.columns.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/charges.main.js') }}"></script>
 {% endblock %}
