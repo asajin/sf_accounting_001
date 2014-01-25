@@ -5,8 +5,30 @@ AccountingChargesBundle_index:
     requirements:
         _method:  GET
 
-AccountingChargesBundle_filter:
-    pattern:  /charges/filter
-    defaults: { _controller: AccountingChargesBundle:Default:filter }
+AccountingChargesBundle_list:
+    pattern:  /service/charges/list.{_format}
+    defaults: { _controller: AccountingChargesBundle:Default:list, _format: json, _locale: en }
     requirements:
         _method:  GET
+        _format: JSON
+
+AccountingChargesBundle_load:
+    pattern:  /service/charges/load.{_format}
+    defaults: { _controller: AccountingChargesBundle:Default:load, _format: json, _locale: en }
+    requirements:
+        _method:  GET
+        _format: JSON
+
+AccountingChargesBundle_create:
+    pattern:  /service/charges/create.{_format}
+    defaults: { _controller: AccountingChargesBundle:Default:create, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
+AccountingChargesBundle_createCharge:
+    pattern:  /service/charges/createCharge.{_format}
+    defaults: { _controller: AccountingChargesBundle:Default:createCharge, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
