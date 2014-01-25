@@ -1,5 +1,6 @@
 var chargesColumns = {
     charges : [],
+    chargesDropDown : [],
     columns : [
     {
         field: "price_date",
@@ -39,6 +40,9 @@ var chargesColumns = {
     }
     ],
     init : function() {
+        chargesColumns.loadDropdowns();
+    },
+    loadDropdowns : function(callback) {
         $.ajax({
             type: "GET",
             url: chargesUrlObj.load,
@@ -46,10 +50,13 @@ var chargesColumns = {
             cache: false
         }).done(function( data ) {
             chargesColumns.charges = data['charges'];
+            if(jQuery.isFunction(callback)) {
+                callback();
+            }
         });
     },
     chargeDropDown : function(container, options) {
-        $('<input required data-text-field="name" data-value-field="id" data-bind="value:' + options.field + '"/>')
+        chargesColumns.chargesDropDown = $('<input required data-text-field="name" data-value-field="id" data-bind="value:' + options.field + '"/>')
         .appendTo(container)
         .kendoDropDownList({
             autoBind: false,
@@ -60,7 +67,10 @@ var chargesColumns = {
         .appendTo(container);
 
         $("#newCharge").click( function (e) {
-            //                    productForm.open();
+            e.preventDefault();
+            var win = $("#chargeNew").data("kendoWindow");
+            win.center();
+            win.open();
         });
     }
 };

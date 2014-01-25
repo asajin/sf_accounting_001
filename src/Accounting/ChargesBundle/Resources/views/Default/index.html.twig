@@ -16,6 +16,8 @@
         <div id="grid" style="height: 350px"></div>
 
     </div>
+    
+    {% include 'AccountingChargesBundle::Default/charge.html.twig' %}
 {% endblock %}
     
 
@@ -24,11 +26,13 @@
 var chargesUrlObj = {
 read: "{{ path('AccountingChargesBundle_list') }}",
 load: "{{ path('AccountingChargesBundle_load') }}",
-create: "{{ path('AccountingChargesBundle_create') }}"
+create: "{{ path('AccountingChargesBundle_create') }}",
+createCharge: "{{ path('AccountingChargesBundle_createCharge') }}"
 }
 </script>
 <script src="{{ asset('bundles/accounting/js/charges.search.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/charges.source.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/charges.columns.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/charges.type.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/charges.main.js') }}"></script>
 {% endblock %}

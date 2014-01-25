@@ -12,6 +12,13 @@ var chargesTransport = {
         url: chargesUrlObj.create,
         dataType: "json",
         type: "PUT"
+    },
+    parameterMap: function(options, operation) {
+        if (operation !== "read" && options) {
+            return {
+                models: kendo.stringify(options)
+            };
+        }
     }
 };
 

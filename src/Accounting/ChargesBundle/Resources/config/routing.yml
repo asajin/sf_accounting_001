@@ -25,3 +25,10 @@ AccountingChargesBundle_create:
     requirements:
         _method:  PUT
         _format: JSON
+
+AccountingChargesBundle_createCharge:
+    pattern:  /service/charges/createCharge.{_format}
+    defaults: { _controller: AccountingChargesBundle:Default:createCharge, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON

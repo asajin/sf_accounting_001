@@ -38,9 +38,9 @@ class Charge
     protected $name;
 
     /**
-     * @var decimal $last_local_price
+     * @var decimal $last_buy_price
      *
-     * @ORM\Column(name="last_local_price", type="decimal", scale=2)
+     * @ORM\Column(name="last_buy_price", type="decimal", scale=2)
      */
     protected $last_buy_price;
 
