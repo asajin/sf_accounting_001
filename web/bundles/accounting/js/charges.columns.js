@@ -25,7 +25,7 @@ var chargesColumns = {
     },
     {
         field: "local_price",
-        title: "local_price",
+        title: "Buy Price",
         width: 30
     },
     {
