@@ -59,6 +59,10 @@ class DefaultController extends Controller
                 ->getRepository('CommonDataBundle:Product')
                 ->find($models[0]->product->id);
         $sp->setProduct($product);
+        $customer = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Customer')
+                ->find($models[0]->customer->id);
+        $sp->setCustomer($customer);
 
         $sp->setCurrencyPrice(0);
         $sp->setLocalPrice($models[0]->local_price);
