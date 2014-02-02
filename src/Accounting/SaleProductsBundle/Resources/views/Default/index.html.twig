@@ -10,6 +10,7 @@
     </div>
     {% include 'AccountingSuppliersProductsBundle::Default/product.html.twig' %}
     {% include 'AccountingSuppliersProductsBundle::Default/unit.html.twig' %}
+    {% include 'AccountingSaleProductsBundle::Default/customer.html.twig' %}
 {% endblock %}
 
 
@@ -27,10 +28,13 @@ createUnit: "{{ path('AccountingSuppliersProductsBundle_createUnit') }}",
 var saleUrlObj = {
 read: "{{ path('AccountingSaleProductsBundle_list') }}",
 create: "{{ path('AccountingSaleProductsBundle_create') }}",
+createCustomer: "{{ path('AccountingSaleProductsBundle_createCustomer') }}",
 destroy: "{{ path('AccountingSaleProductsBundle_delete') }}",
 load: "{{ path('AccountingSuppliersProductsBundle_dropdowns') }}",
 }
 </script>
+<script src="{{ asset('bundles/accounting/js/base/base.js') }}"></script>
+<script src="{{ asset('bundles/accounting/js/customer/customerForm.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/sale.product.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/sp.new.columns.js') }}"></script>
 <script src="{{ asset('bundles/accounting/js/sp.product.js') }}"></script>

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Common\DataBundle\Entity\SaleTimePrice;
+use Common\DataBundle\Entity\Customer;
 
 class DefaultController extends Controller
 {
@@ -75,6 +76,35 @@ class DefaultController extends Controller
         $em->flush();
 
         $models[0]->id = $sp->getId();
+
+        $response = new Response(json_encode($models[0]));
+
+        return $response;
+    }
+    
+    public function createCustomerAction(Request $request)
+    {
+        $models = json_decode($request->get('models'));
+
+        if (empty($models[0]->id)) {
+            $customer = new Customer();
+        } else {
+            $customer = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:Customer')
+                ->find($models[0]->id);
+        }
+
+        $customer->setName($models[0]->name);
+        $customer->setAddress($models[0]->address);
+        $customer->setEmail("");
+        $customer->setTelephone($models[0]->telephone);
+        $customer->setDescription($models[0]->description);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($customer);
+        $em->flush();
+
+        $models[0]->id = $customer->getId();
 
         $response = new Response(json_encode($models[0]));
 

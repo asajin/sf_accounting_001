@@ -130,7 +130,7 @@ $("#grid").kendoGrid({
             width: 30,
             template: '#= customer.name #',
             editor: function(container, options) {
-                $('<input required data-text-field="name" data-value-field="id" data-bind="value:' + options.field + '"/>')
+                newColumnsObj.customersDropdown = $('<input required data-text-field="name" data-value-field="id" data-bind="value:' + options.field + '"/>')
                 .appendTo(container)
                 .kendoDropDownList({
                     autoBind: false,
@@ -141,7 +141,10 @@ $("#grid").kendoGrid({
                 .appendTo(container);
 
                 $("#newCustomer").click( function (e) {
-//                    productForm.open();
+                    e.preventDefault();
+                    var win = customerFormOptions.window.data("kendoWindow");
+                    win.center();
+                    win.open();
                 });
             }
         },
