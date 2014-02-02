@@ -2,6 +2,7 @@ var newColumnsObj = {
     productsDropdown:null,
     suppliersDropdown:null,
     unitsDropdown:null,
+    customersDropdown:null,
     products: [],
     suppliers: [],
     units: [],

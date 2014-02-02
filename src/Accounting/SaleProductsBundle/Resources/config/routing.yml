@@ -19,6 +19,13 @@ AccountingSaleProductsBundle_create:
         _method:  PUT
         _format: JSON
 
+AccountingSaleProductsBundle_createCustomer:
+    pattern:  /service/sale/product/createCustomer.{_format}
+    defaults: { _controller: AccountingSaleProductsBundle:Default:createCustomer, _format: json, _locale: en }
+    requirements:
+        _method:  PUT
+        _format: JSON
+
 AccountingSaleProductsBundle_delete:
     pattern:  /service/sale/product/delete.{_format}
     defaults: { _controller: AccountingSaleProductsBundle:Default:delete, _format: json, _locale: en }
