@@ -36,13 +36,12 @@ $(document).ready(function() {
 
     kendo.bind($("#chargeForm"), kendo.observable({
         name: "",
-        chargeSource: chargeTypeSourceObj,
         save: function() {
             console.log('update');
-            this.chargeSource.add({
+            chargeTypeSourceObj.add({
                 name:this.name
             });
-            this.chargeSource.sync();
+            chargeTypeSourceObj.sync();
             console.log('success sync');
         },
         cancel: function(e) {
