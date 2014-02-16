@@ -1,4 +1,5 @@
 var customerFormOptions = {
+    formRef : "customerForm",
     title: "Create Customer",
     form : $("#customerForm"),
     window : $("#customerNew"),
@@ -19,7 +20,7 @@ var customerFormOptions = {
             description: ""
         }
     },
-    onClose : function(data) {
+    afterClose : function(data) {
         newColumnsObj.loadDropdowns(function(){
             newColumnsObj.customersDropdown.data('kendoDropDownList').setDataSource(newColumnsObj.customers);
             newColumnsObj.customersDropdown.data('kendoDropDownList').refresh();

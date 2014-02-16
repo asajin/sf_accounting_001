@@ -1,8 +1,13 @@
 
 /**
- * BaseTransport
+ * FormModelTransport
  */
-var BaseTransport = {
+var FormModelTransport = {
+    create: {
+        url: "",//reasign
+        dataType: "json",
+        type: "PUT"
+    },
     parameterMap: function(options, operation) {
         if (operation == "create") {
             return {
@@ -13,67 +18,56 @@ var BaseTransport = {
 };
 
 /**
- * BaseSchema
+ * FormModelSchema
  */
-var BaseSchema = {
-    window : null,
+var FormModelSchema = {
+    window : null,//reasign
+    model: {
+        id: "id",
+        fields: null//reasign
+    },
+    afterClose : null,//reasign
     parse:function (data) {
         this.window.data("kendoWindow").close();
-        FormBind.options.onClose(data);
+        if($.isFunction(this.afterClose)) {
+            this.afterClose(data);
+        }
         return data;
     }
 };
 
 /**
- * FormModelTransport
- */
-var FormModelTransport = $.extend({
-    create: {
-        url: "",//reasign
-        dataType: "json",
-        type: "PUT"
-    }
-}, BaseTransport);
-
-/**
- * FormModelSchema
- */
-var FormModelSchema = $.extend({
-    window : null,//reasign
-    model: {
-        id: "id",
-        fields: null//reasign
-    }
-}, BaseSchema);
-
-/**
  * FormActions
  */
 var FormActions = {
+    formRef: "default",
     save: function(e) {
         e.preventDefault();
-        FormModelTransport.create.url = FormBind.options.url.create;
-        FormModelSchema.window = FormBind.options.window;
-        FormModelSchema.model.fields = FormBind.options.fields.model;
+        var options = FormBind.options[this.formRef];
+        
+        FormModelTransport.create.url = options.url.create;
+        FormModelSchema.window = options.window;
+        FormModelSchema.model.fields = options.fields.model;
+        FormModelSchema.afterClose = options.afterClose;
         
         
-        var FormModelStore = new kendo.data.DataSource({
+        var formModelStore = new kendo.data.DataSource({
             batch: true,
             transport: FormModelTransport,
             schema: FormModelSchema
         });
         
         var object = {};
-        for(var index in FormBind.options.fields.model) { 
+        for(var index in options.fields.model) { 
             object[index] = this[index];
         }
-        FormModelStore.add(object);
+        formModelStore.add(object);
 
-        FormModelStore.sync();
+        formModelStore.sync();
     },
     cancel: function(e) {
         e.preventDefault();
-        FormBind.options.window.data("kendoWindow").close();
+        FormBind.options[this.formRef].window.data("kendoWindow").close();
     }
 };
 
@@ -91,13 +85,15 @@ var FormWindow = {
  * FormBind
  */
 var FormBind = {
-    options : null,
+    options : [],
     init : function(formOptions) {
-        FormBind.options = formOptions;
         
-        FormActions = $.extend(FormActions, formOptions.fields.form);
+        var form = $.extend({}, FormActions, formOptions.fields.form);
+        form.formRef = formOptions.formRef;
         
-        kendo.bind(formOptions.form, kendo.observable(FormActions));
+        FormBind.options[form.formRef] = formOptions;
+        
+        kendo.bind(formOptions.form, kendo.observable(form));
         
         formOptions.window.show();
         FormWindow.title = formOptions.title;

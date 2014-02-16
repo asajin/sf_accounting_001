@@ -1,4 +1,5 @@
 var chargesFormOptions = {
+    formRef : "chargeForm",
     title : "Create charge",
     form : $("#chargeForm"),
     window : $("#chargeNew"),
@@ -13,7 +14,7 @@ var chargesFormOptions = {
             name: ""
         }
     },
-    onClose : function(data) {
+    afterClose : function(data) {
         chargesColumns.loadDropdowns(function(){
             chargesColumns.chargesDropDown.data('kendoDropDownList').setDataSource(chargesColumns.charges);
             chargesColumns.chargesDropDown.data('kendoDropDownList').refresh();
