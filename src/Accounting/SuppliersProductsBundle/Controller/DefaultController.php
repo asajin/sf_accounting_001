@@ -9,6 +9,7 @@ use Common\DataBundle\Entity\Product;
 use Common\DataBundle\Entity\Supplier;
 use Common\DataBundle\Entity\Unit;
 use Common\DataBundle\Entity\TimePrice;
+use Common\DataBundle\Entity\MonthlyTimePrice;
 
 class DefaultController extends Controller
 {
@@ -199,14 +200,18 @@ class DefaultController extends Controller
         $sp->setLocalPrice($models[0]->local_price);
         $sp->setSalePrice($models[0]->sale_price);
         $sp->setCurrencyRate($models[0]->currency_rate);
-        $sp->setPriceDate(new \DateTime($models[0]->price_date));
+        $priceDate = new \DateTime($models[0]->price_date);
+        $sp->setPriceDate($priceDate);
         $sp->setStock($models[0]->stock);
         $sp->setUpdatedAt(new \DateTime('now'));
         if (empty($models[0]->id)) {
             $sp->setCreatedAt(new \DateTime('now'));
         }
-
+        
         $em = $this->getDoctrine()->getEntityManager();
+        
+        $this->updateMonthlyPrice($em, $sp, $priceDate);
+
         $em->persist($sp);
         $em->flush();
 
@@ -215,6 +220,90 @@ class DefaultController extends Controller
         $response = new Response(json_encode($models[0]));
 
         return $response;
+    }
+    
+    private function updateMonthlyPrice(&$em, TimePrice $sp, \DateTime $priceDate)
+    {
+        $monthDate = $priceDate;
+        
+        $repository = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:MonthlyTimePrice');
+        $query = $repository->createQueryBuilder('mtp')
+                ->where('mtp.amount_date >= :time_price_date ')
+                    ->setParameter('time_price_date', $priceDate)
+                ->getQuery();
+        
+        $timePrices = $query->getResult();
+
+        if ($timePrices) {
+            foreach ($timePrices as $time) {
+                $supplyQuantity = $time->getSupplyQuantity() + $sp->getStock();
+                $supplyAmount = $time->getSupplyAmount() + ($sp->getStock() * $sp->getLocalPrice());
+                
+                
+                $saleAmount = 0;
+                $repository = $this->getDoctrine()
+                        ->getRepository('CommonDataBundle:MonthlyTimePrice');
+                $query = $repository->createQueryBuilder('mtp')
+                        ->where('mtp.amount_date < :time_price_date ')
+                            ->setParameter('time_price_date', $time->getAmountDate())
+                        ->setMaxResults(1)
+                        ->getQuery();
+                $timePricePrev = $query->getResult();
+                $saleAmount = ( ($timePricePrev->getAmount() + $supplyAmount)/($timePricePrev->getStock() + $supplyQuantity) ) * $time->getSaleQuantity();
+                
+                $stock = $time->getStock() + $sp->getStock();
+                $amount = $time->getAmount() + ($sp->getStock() * $sp->getLocalPrice());
+                
+                $time->setSupplyQuantity($supplyQuantity);
+                $time->setSupplyAmount($supplyAmount);
+                $mp->setSaleAmount($saleAmount);
+                $time->setStock($stock);
+                $time->setAmount($amount);
+                $time->setAmountDate($monthDate);
+
+                $em->persist($mp);
+            }
+        } else {
+            $monthDate->modify('last day');
+            
+            $repository = $this->getDoctrine()
+                    ->getRepository('CommonDataBundle:MonthlyTimePrice');
+            $query = $repository->createQueryBuilder('mtp')
+                    ->where('mtp.amount_date < :time_price_date ')
+                        ->setParameter('time_price_date', $monthDate)
+                    ->setMaxResults(1)
+                    ->getQuery();
+
+            $timePricePrev = $query->getResult();
+            
+            if($timePricePrev) {
+                $supplyQuantity = $sp->getStock();
+                $supplyAmount = $sp->getStock() * $sp->getLocalPrice();
+                $saleQuantity = 0;
+                $saleAmount = 0;
+                $stock = $supplyQuantity + $timePricePrev->getStock();
+                $amount = $supplyAmount + $timePricePrev->getAmount();
+            } else {
+                $supplyQuantity = $sp->getStock();
+                $supplyAmount = $sp->getStock() * $sp->getLocalPrice();
+                $saleQuantity = 0;
+                $saleAmount = 0;
+                $stock = $supplyQuantity;
+                $amount = $supplyAmount;
+            }
+            
+            $mp = new MonthlyTimePrice();
+            $mp->setSupplyQuantity($supplyQuantity);
+            $mp->setSupplyAmount($supplyAmount);
+            $mp->setSaleQuantity($saleQuantity);
+            $mp->setSaleAmount($saleAmount);
+            $mp->setStock($stock);
+            $mp->setAmount($amount);
+            $mp->setAmountDate($monthDate);
+            
+            $em->persist($mp);
+        }
     }
 
     public function deleteAction(Request $request)
