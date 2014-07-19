@@ -16,8 +16,9 @@ accounting_offers:
     prefix:   /
 
 accounting_profit:
-    resource: "@AccountingProfitBundle/Resources/config/routing.yml"
-    prefix:   /
+    resource: "@AccountingProfitBundle/Controller/DefaultController.php"
+    type:     annotation
+    prefix:   /profit
 
 accounting_sale_offers:
     resource: "@AccountingSaleOffersBundle/Resources/config/routing.yml"

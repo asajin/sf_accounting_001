@@ -14,70 +14,10 @@
     
     
 {% block javascripts_embedded %}
-        <script src="{{ asset('bundles/test/js/charges.js') }}"></script>
-        {% block javascripts_addons %}{% endblock %}
 <script>
-$(document).ready(function() {
-$("#grid").kendoGrid({
-    dataSource: {
-        data: createCharges(50),
-        schema: {
-            model: {
-                fields: {
-                    name: { type: "string" },
-                    type: { type: "string" },
-                    date_0112: { type: "number" },
-                    date_0212: { type: "number" },
-                    total: { type: "number" }
-                }
-            }
-        },
-        pageSize: 10,
-        group: { field: "type", aggregates: [
-                { field: "date_0112", aggregate: "sum"}, 
-                { field: "date_0212", aggregate: "sum"},
-                { field: "total", aggregate: "sum"}] }
-    },
-    height: 350,
-    scrollable: true,
-    sortable: true,
-    filterable: true,
-    pageable: {
-        pageSizes: true,
-        refresh: true
-        //input: true
-        //numeric: false
-    },
-    columns: [
-        {
-            field: "name",
-            title: "Name",
-        },
-        {
-            hidden: true,
-            field: "type",
-            title: "Type",
-            groupHeaderTemplate: 'Type : #= value #'
-        },
-        {
-            field: "date_0112",
-            title: "Jan-12",
-            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
-        },
-        {
-            field: "date_0212",
-            title: "Feb-12",
-            groupFooterTemplate: '<u>total: #= kendo.toString(sum, "n")#</u>',
-        },
-        {
-            field: "total",
-            title: "<b>Total</b>",
-            template: '<b>#= kendo.toString(total, "n") #</b>',
-            groupFooterTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>',
-            footerTemplate: '<b>total: #= kendo.toString(sum, "n")#</b>'
-        }
-    ]
-});
-});
+var profitUrlObj = {read: "{{ path('AccountingProfitBundle_list') }}"};
 </script>
+<script src="{{ asset('bundles/accounting/js/profit.main.js') }}"></script>
+{% block javascripts_addons %}{% endblock %}
+<script>
 {% endblock %}
