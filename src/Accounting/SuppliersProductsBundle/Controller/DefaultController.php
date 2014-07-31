@@ -404,7 +404,8 @@ class DefaultController extends Controller
             $em->persist($unit);
         }
         $product->setUnit($unit);
-        $product->setLastPrice(0);
+        $product->setLastSalePrice(0);
+        $product->setLastLocalPrice(0);
         $product->setLastStock(0);
         $product->setLastAddDate(new \DateTime('now'));
         $product->setDescription($models[0]->description);
