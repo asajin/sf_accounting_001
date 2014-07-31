@@ -31,9 +31,6 @@ var spSchemaObj = {
         }
     },
     parse:function (data) {
-        $.each(data, function (idx, elem) {
-            elem.price_date = new Date(elem.price_date);
-        });
         return data;
     }
 }
