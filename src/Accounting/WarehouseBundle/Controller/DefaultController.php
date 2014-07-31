@@ -23,26 +23,24 @@ class DefaultController extends Controller
         }
 
         $repository = $this->getDoctrine()
-                ->getRepository('CommonDataBundle:Product');
+                ->getRepository('CommonDataBundle:MonthlyTimePrice');
 
         $current_month = new \DateTime($month);
         $current_month->modify("last day of this month");
+        $current_month = new \DateTime($current_month->format('Y-m-t 23:59:59'));
+        
         $previous_month = new \DateTime($month);
         $previous_month->modify("last day of previous month");
-//        echo $current_month->format("Y-m-d");
-//        echo $previous_month->format("Y-m-d");
+        $previous_month = new \DateTime($previous_month->format('Y-m-t 23:59:59'));
 
-        $query = $repository->createQueryBuilder('p')
+        $query = $repository->createQueryBuilder('mtp')
                 ->select('p.id, p.code, p.name as product_name, u.name as unit')
-                ->addSelect('(sum(tp.stock)-sum(stp.quantity)) as first_stock')
-                ->addSelect('(sum(tp.stock*tp.local_price)-sum(stp.quantity*stp.local_price)) as first_amount')
-                ->leftJoin('p.time_prices', 'tp')
-                ->leftJoin('p.sale_time_prices', 'stp')
+                ->addSelect('mtp.stock as first_stock')
+                ->addSelect('mtp.amount as first_amount')
+                ->leftJoin('mtp.product', 'p')
                 ->leftJoin('p.unit', 'u')
-                ->where('(tp.price_date <= :date_end OR stp.price_date <= :date_end)')
-                ->setParameter('date_end', $previous_month)
-                ->groupBy('p.id')
-                ->having('first_stock <> 0')
+                ->where('mtp.amount_date = :date_end')
+                    ->setParameter('date_end', $previous_month)
                 ->getQuery();
         $products1 = $query->getResult(Query::HYDRATE_ARRAY);
         $result = array();
@@ -55,48 +53,21 @@ class DefaultController extends Controller
             $result[$product['id']] = array_merge($item, $product);
         }
 
-        $query = $repository->createQueryBuilder('p')
+        $query = $repository->createQueryBuilder('mtp')
                 ->select('p.id, p.code, p.name as product_name, u.name as unit')
-                ->addSelect('sum(tp.stock) as income_stock')
-                ->addSelect('sum(tp.stock*tp.local_price) as income_amount')
-                ->addSelect('sum(stp.quantity) as expense_stock')
-                ->addSelect('sum(stp.quantity*stp.local_price) as expense_amount')
-                ->leftJoin('p.time_prices', 'tp')
-                ->leftJoin('p.sale_time_prices', 'stp')
+                ->addSelect('mtp.supply_quantity as income_stock')
+                ->addSelect('mtp.supply_amount as income_amount')
+                ->addSelect('mtp.sale_quantity as expense_stock')
+                ->addSelect('mtp.sale_amount as expense_amount')
+                ->addSelect('mtp.stock as last_stock')
+                ->addSelect('mtp.amount as last_amount')
+                ->leftJoin('mtp.product', 'p')
                 ->leftJoin('p.unit', 'u')
-                ->where('(tp.price_date <= :date_end OR stp.price_date <= :date_end)')
-                ->andWhere('(tp.price_date > :date_start OR stp.price_date > :date_end)')
-                ->setParameter('date_start', $previous_month)
-                ->setParameter('date_end', $current_month)
-                ->groupBy('p.id')
-                ->having('income_stock <> 0 OR expense_stock <> 0')
+                ->where('mtp.amount_date = :date_end')
+                    ->setParameter('date_end', $current_month)
                 ->getQuery();
         $products2 = $query->getResult(Query::HYDRATE_ARRAY);
         foreach($products2 as $product) {
-            if(empty($result[$product['id']])) {
-                $product = array_filter($product);
-                $product = array_merge($item, $product);
-                $result[$product['id']] = $product;
-            } else {
-                $result[$product['id']] = array_merge($result[$product['id']], $product);
-            }
-        }
-
-        $query = $repository->createQueryBuilder('p')
-                ->select('p.id, p.code, p.name as product_name, u.name as unit')
-                ->addSelect('(sum(tp.stock)-sum(stp.quantity)) as last_stock')
-                ->addSelect('(sum(tp.stock*tp.local_price)-sum(stp.quantity*stp.local_price)) as last_amount')
-                ->leftJoin('p.time_prices', 'tp')
-                ->leftJoin('p.sale_time_prices', 'stp')
-                ->leftJoin('p.unit', 'u')
-                ->where('(tp.price_date <= :date_end OR stp.price_date <= :date_end)')
-                ->andWhere('(tp.id IS NOT NULL OR stp.id IS NOT NULL)')
-                ->setParameter('date_end', $current_month)
-                ->groupBy('p.id')
-                ->having('last_stock <> 0')
-                ->getQuery();
-        $products3 = $query->getResult(Query::HYDRATE_ARRAY);
-        foreach($products3 as $product) {
             if(empty($result[$product['id']])) {
                 $product = array_filter($product);
                 $product = array_merge($item, $product);
