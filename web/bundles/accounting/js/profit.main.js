@@ -9,11 +9,11 @@ var profitSourceObj = {
     schema: {
         model: {
             fields: {
-                month: {type: "date"},
-                sale_amount: {type: "number"},
-                buy_amount: {type: "number"},
+                month: {type: "string"},
+                products_sales: {type: "number"},
+                products_costs: {type: "number"},
                 direct_charges: {type: "number"},
-                indirect_charges: {type: "number"},
+//                indirect_charges: {type: "number"},
                 profit: {type: "number"}
             }
         }
@@ -35,33 +35,33 @@ $(document).ready(function() {
         },
         columns: [
         {
-            field: "Month",
-            title: "month",
+            field: "month",
+            title: "Month",
             width: 30
         },
         {
-            field: "Products sales",
-            title: "products_sales",
+            field: "products_sales",
+            title: "Products sales",
+            width: 40
+        },
+        {
+            field: "products_costs",
+            title: "Products Costs",
             width: 30
         },
         {
-            field: "Products Costs",
-            title: "products_costs",
+            field: "direct_charges",
+            title: "Direct Charges",
             width: 30
         },
+//        {
+//            field: "Indirect charges",
+//            title: "indirect_charges",
+//            width: 30
+//        },
         {
-            field: "Direct charges",
-            title: "direct_charges",
-            width: 30
-        },
-        {
-            field: "Indirect charges",
-            title: "indirect_charges",
-            width: 30
-        },
-        {
-            field: "Profit",
-            title: "profit",
+            field: "profit",
+            title: "Profit",
             width: 30
         }
         ]
