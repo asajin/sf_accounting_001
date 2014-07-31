@@ -23,56 +23,73 @@ class DefaultController extends Controller
     
     /**
      * 
-     * @Route("list", name="AccountingProfitBundle_list")
+     * @Route(
+     *  "list.{_format}", 
+     *  name="AccountingProfitBundle_list", 
+     *  requirements = { "_format" = "json" }, 
+     *  defaults={"_format" = "json", "_locale": "en"}
+     * )
      * @Method({"GET"})
      * 
      * @return type
      */
     public function listAction()
     {
-//                month: {type: "date"},
-//                products_sales: {type: "number"},
-//                products_costs: {type: "number"},
-//                direct_charges: {type: "number"},
-//                indirect_charges: {type: "number"},
-//                profit: {type: "number"}
-        
-
-        
         $repository = $this->getDoctrine()
                 ->getRepository('CommonDataBundle:SaleTimePrice');
         $query = $repository->createQueryBuilder('stp')
-                ->select('SUBSTRING(stp.price_date, 1, 7) as price_date_month')
-                ->addSelect('sum(stp.quantity) as sum_quantity')
-                ->addSelect('sum(stp.sale_price * stp.quantity) as sale_amount')
-                ->groupBy('price_date_month')
+                ->select('SUBSTRING(stp.price_date, 1, 7) as month')
+                ->addSelect('sum(stp.sale_price * stp.quantity) as products_sales')
+                ->groupBy('month')
                 ->getQuery();
         
         $saleTimePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        
+        $salesResult = array();
+        foreach ($saleTimePrices as $value) {
+            $salesResult[$value['month']] = $value;
+        }
         
         $repository = $this->getDoctrine()
-                ->getRepository('CommonDataBundle:TimePrice');
-        $query = $repository->createQueryBuilder('tp')
-                ->select('SUBSTRING(tp.price_date, 1, 7) as price_date_month')
-                ->addSelect('sum(tp.stock) as sum_stock')
-                ->addSelect('sum(tp.local_price * tp.stock) as buy_amount')
-                ->groupBy('price_date_month')
+                ->getRepository('CommonDataBundle:MonthlyTimePrice');
+        $query = $repository->createQueryBuilder('mtp')
+                ->select('SUBSTRING(mtp.amount_date, 1, 7) as month')
+                ->addSelect('sum(mtp.sale_amount) as products_costs')
+                ->groupBy('month')
                 ->getQuery();
         
         $timePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $costsResult = array();
+        foreach ($timePrices as $value) {
+            $costsResult[$value['month']] = $value;
+        }
+
+        $repository = $this->getDoctrine()
+                ->getRepository('CommonDataBundle:ChargeTimePrice');
+        $query = $repository->createQueryBuilder('ctp')
+                ->select('SUBSTRING(ctp.price_date, 1, 7) as month')
+                ->addSelect('sum(ctp.local_price * ctp.quantity) as direct_charges')
+                ->groupBy('month')
+                ->getQuery();
         
+        $chargeTimePrices = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $result = array();
         $index = 0;
-        foreach ($saleTimePrices as $key => $sale) {
-            foreach ($timePrices as $buy) {
-                if($sale['price_date_month'] == $buy['price_date_month']) {
-                    $result[$index] = $sale;
-                    $result[$index]['sum_stock'] = $buy['sum_stock'];
-                    $result[$index++]['buy_amount'] = $buy['buy_amount'];
-                    break;
-                }
-            }
+        
+        foreach ($chargeTimePrices as $value) {
+            $result[$index] = $value;
+            $result[$index]['id'] = $index;
+            if(empty($salesResult[$value['month']]))
+                $result[$index]['products_sales'] = 0;
+            else
+                $result[$index]['products_sales'] = $salesResult[$value['month']]['products_sales'];
+            
+            if(empty($costsResult[$value['month']]))
+                $result[$index]['products_costs'] = 0;
+            else
+                $result[$index]['products_costs'] = $costsResult[$value['month']]['products_costs'];
+            
+            $result[$index]['profit'] = $result[$index]['products_sales'] - $result[$index]['products_costs'] - $result[$index]['direct_charges'];
+            $index++;
         }
         
         $response = new Response(json_encode($result));

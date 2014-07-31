@@ -1,11 +1,16 @@
 {# src/Accounting/ProfitBundle/Resources/views/Page/index.html.twig #}
 {% extends 'AccountingProfitBundle::layout.html.twig' %}
 
+{% block javascripts_embedded %}
+    <script>
+        var profitUrlObj = {read: "{{ path('AccountingProfitBundle_list') }}"};
+    </script>
+    <script src="{{ asset('bundles/accounting/js/profit.main.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     <h2>Profit</h2>
     <div id="clientsDb">
-
-        {% block form %}{% endblock %}
 
         <div id="grid" style="height: 350px"></div>
 
@@ -13,11 +18,3 @@
 {% endblock %}
     
     
-{% block javascripts_embedded %}
-<script>
-var profitUrlObj = {read: "{{ path('AccountingProfitBundle_list') }}"};
-</script>
-<script src="{{ asset('bundles/accounting/js/profit.main.js') }}"></script>
-{% block javascripts_addons %}{% endblock %}
-<script>
-{% endblock %}
